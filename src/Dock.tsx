@@ -767,10 +767,15 @@ const Dock = memo(function Dock() {
 						width:
 							isExpanded && !isHidden && isVisible ? (isAdaptive ? adaptiveWidth : "auto") : 34,
 						height: isExpanded && !isHidden && isVisible ? "auto" : 34,
-						borderTopLeftRadius: (isImpacted || isExpanded) && !isHidden && isVisible ? 18 : 17,
-						borderTopRightRadius: (isImpacted || isExpanded) && !isHidden && isVisible ? 18 : 17,
-						borderBottomLeftRadius: (isImpacted || isExpanded) && !isHidden && isVisible ? 0 : 17,
-						borderBottomRightRadius: (isImpacted || isExpanded) && !isHidden && isVisible ? 0 : 17,
+						...(() => {
+							const flag = (isImpacted || isExpanded) && !isHidden && isVisible;
+							return {
+								borderTopLeftRadius: flag ? 28 : 17,
+								borderTopRightRadius: flag ? 28 : 17,
+								borderBottomLeftRadius: flag ? 0 : 17,
+								borderBottomRightRadius: flag ? 0 : 17
+							};
+						})(),
 						opacity: isVisible ? 1 : 0,
 						scale: scale
 					}}
