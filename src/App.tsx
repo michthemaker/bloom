@@ -1292,7 +1292,7 @@ function App() {
 			settingsMusicCompactNotch &&
 			mediaInfo.has_media &&
 			isPlaying &&
-			bloomMode === "status" &&
+			isStatusMode &&
 			!isHovered
 		) {
 			setBloomMode("music");
@@ -1745,13 +1745,15 @@ function App() {
 	};
 
 	// Music mode shows any time we have media info (playing or paused) and music mode setting is enabled
-	const isMusicMode = mediaInfo.has_media && bloomMode === "music" && settingsMusicModeEnabled;
+	const isMusicMode = mediaInfo.has_media && bloomMode === "music" && settingsMusicModeEnabled,
+		isCommandCenterMode = bloomMode === "command-center",
+		isStatusMode = bloomMode === "status";
 
 	// Calculate width dynamically based on enabled features
 	const getDynamicWidth = () => {
 		if (isCalendarMode) return 480;
-		if (bloomMode === "command-center" && isHovered) return 350;
-		if (bloomMode === "status" && isHovered) {
+		if (isCommandCenterMode && isHovered) return 350;
+		if (isStatusMode && isHovered) {
 			const totalWidgets = statusWidgets.left.length + statusWidgets.right.length;
 			return Math.min(200 + totalWidgets * 50, 380);
 		}
@@ -1857,8 +1859,8 @@ function App() {
 						...(() => {
 							const bRadius = inlineSwitch(
 								true,
-								[isCalendarMode, 24],
-								[isHovered && isMusicMode, 18],
+								[isCalendarMode, 48],
+								[isHovered && (isMusicMode || isCommandCenterMode), 24],
 								{ default: 14 }
 							);
 							return {
@@ -1884,11 +1886,7 @@ function App() {
 							mediaInfo.has_media && isPlaying && settingsMusicCompactNotch ? "music" : "status";
 						if (bloomMode === "music") {
 							setBloomMode(targetMode);
-						} else if (
-							bloomMode === "command-center" ||
-							bloomMode === "calendar" ||
-							bloomMode === "status"
-						) {
+						} else if (isCommandCenterMode || bloomMode === "calendar" || bloomMode === "status") {
 							setBloomMode(targetMode);
 						}
 					}}
@@ -2435,7 +2433,7 @@ function App() {
 
 								{/* Command Center Panel */}
 								<AnimatePresence>
-									{bloomMode === "command-center" && (
+									{isCommandCenterMode && (
 										<motion.div
 											className="command-center-content-minimal"
 											onClick={(e) => e.stopPropagation()}
