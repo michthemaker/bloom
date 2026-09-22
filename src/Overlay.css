@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
-
 * {
 	margin: 0;
 	padding: 0;
@@ -13,6 +11,7 @@ body,
 	height: 100%;
 	overflow: hidden;
 	background: transparent;
+	font-family: "SF Pro Display", "Segoe UI";
 }
 
 /* ─── Container ─────────────────────────────────────────────────────────── */
@@ -67,12 +66,7 @@ body,
 
 .update-splash-text {
 	color: var(--bloom-text, rgba(255, 255, 255, 0.9));
-	font-family:
-		"Inter",
-		-apple-system,
-		BlinkMacSystemFont,
-		"Segoe UI",
-		sans-serif;
+	font-family: "SF Pro Display", "Segoe UI";
 	font-size: 14px;
 	font-weight: 500;
 	margin-bottom: 16px;
@@ -194,12 +188,7 @@ body,
 	color: var(--bloom-text, white);
 	font-size: 10px;
 	font-weight: 700;
-	font-family:
-		"Inter",
-		-apple-system,
-		BlinkMacSystemFont,
-		"Segoe UI",
-		sans-serif;
+	font-family: "SF Pro Display", "Segoe UI";
 	text-align: center;
 	width: 100%;
 	margin-bottom: 2px;
