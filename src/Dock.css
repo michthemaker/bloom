@@ -398,7 +398,7 @@ body {
 
 .menu-divider {
 	height: 1px;
-	background: var(--bloom-border, rgba(255, 255, 255, 0.1));
+	background: rgba(255, 255, 255, 0.15);
 	margin: 4px 8px;
 }
 
@@ -410,8 +410,10 @@ body {
 }
 
 .submenu-arrow {
-	font-size: 8px;
+	width: 14px;
+	height: 14px;
 	opacity: 0.5;
+	stroke-width: 3;
 	margin-left: 10px;
 }
 

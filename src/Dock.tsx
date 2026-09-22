@@ -5,6 +5,7 @@ import { listen } from "@tauri-apps/api/event";
 import "./Dock.css";
 import { initTheme } from "./theme";
 import { useSettingsSync } from "./hooks/useSettingsSync";
+import { ChevronRightIcon } from "lucide-react";
 
 interface AppInfo {
 	name: string;
@@ -1243,7 +1244,7 @@ const Dock = memo(function Dock() {
 								onMouseLeave={() => setActiveSubmenu(null)}
 							>
 								Bloom Options
-								<span className="submenu-arrow">▶</span>
+								<ChevronRightIcon className="submenu-arrow" />
 								<div className="submenu">
 									<div
 										className="menu-item"
@@ -1306,7 +1307,7 @@ const Dock = memo(function Dock() {
 								onMouseLeave={() => setActiveSubmenu(null)}
 							>
 								Bloom Options
-								<span className="submenu-arrow">▶</span>
+								<ChevronRightIcon className="submenu-arrow" />
 								<div className="submenu">
 									<div
 										className="menu-item"
