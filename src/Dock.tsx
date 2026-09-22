@@ -21,13 +21,13 @@ interface AppInfo {
 // window, so their window title must be part of their identity — otherwise two
 // PWAs running under the same browser collapse into a single dock item.
 const HOST_PROCESSES = ["msedge.exe", "chrome.exe", "brave.exe", "applicationframehost.exe"];
-export function isBrowserHost(path: string) {
+function isBrowserHost(path: string) {
 	const p = path.toLowerCase();
 	return HOST_PROCESSES.some((host) => p.includes(host));
 }
 
 // Stable identity for a dock item.
-export function appIdentity(p: string, executable?: string, name?: string) {
+function appIdentity(p: string, executable?: string, name?: string) {
 	if (!p) return "";
 	const normalized = p.toLowerCase().replace(/\\/g, "/");
 	// Shell application ids (AUMIDs) and bare names are unique on their own.
@@ -887,7 +887,9 @@ const Dock = memo(function Dock() {
 												animate={ITEM_ANIMATE}
 												exit={ITEM_EXIT}
 												transition={ITEM_ENTRY_TRANSITION}
-												onMouseEnter={() => setHoveredApp(itemKey(app))}
+												onMouseEnter={() => {
+													setHoveredApp(itemKey(app));
+												}}
 												onMouseLeave={() => {
 													if (!isPreviewHoveredRef.current) {
 														setHoveredApp(null);
