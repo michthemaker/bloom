@@ -41,6 +41,7 @@ body {
 	opacity: 0;
 	transition: all 0.2s ease;
 	white-space: nowrap;
+	text-transform: capitalize;
 }
 
 .dock-container:not(.dragging) .dock-icon-wrapper:hover .tooltip:not(.tooltip-hidden) {
