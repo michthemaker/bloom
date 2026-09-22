@@ -843,7 +843,7 @@ const Dock = memo(function Dock() {
 											}}
 										>
 											<img
-												src="/bloom.png"
+												src="/start-menu.svg"
 												alt="Bloom"
 												className="bloom-icon-img"
 												draggable={false}
