@@ -365,7 +365,8 @@ body {
 	background: var(--bloom-bg-expanded, rgba(40, 40, 40, 0.95));
 	backdrop-filter: blur(20px);
 	border: 1px solid var(--bloom-border, rgba(255, 255, 255, 0.1));
-	border-radius: 12px;
+	border-radius: 28px;
+	corner-shape: superellipse(1.85);
 	padding: 6px;
 	z-index: 9999;
 	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -380,7 +381,8 @@ body {
 	padding: 8px 12px;
 	color: var(--bloom-text, white);
 	font-size: 13px;
-	border-radius: 6px;
+	border-radius: 22px;
+	corner-shape: superellipse(1.85);
 	cursor: pointer;
 	font-weight: 500;
 	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -420,7 +422,8 @@ body {
 	background: var(--bloom-bg-expanded, rgba(40, 40, 40, 0.98));
 	backdrop-filter: blur(25px);
 	border: 1px solid var(--bloom-border, rgba(255, 255, 255, 0.1));
-	border-radius: 12px;
+	border-radius: 28px;
+	corner-shape: superellipse(1.85);
 	padding: 6px;
 	min-width: 140px;
 	display: none;
