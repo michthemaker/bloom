@@ -5,7 +5,7 @@ import { listen } from "@tauri-apps/api/event";
 import "./Dock.css";
 import { initTheme } from "./theme";
 import { useSettingsSync } from "./hooks/useSettingsSync";
-import { ChevronRightIcon } from "lucide-react";
+import { ChevronRightIcon, PinIcon } from "lucide-react";
 
 interface AppInfo {
 	name: string;
@@ -1514,25 +1514,24 @@ function AddAppPopup({
 			<motion.div
 				ref={containerRef}
 				className="add-app-popup"
-				style={{ transformOrigin: "bottom center" }}
-				initial={{ opacity: 0, scaleY: 0 }}
-				animate={{ opacity: 1, scaleY: 1 }}
-				exit={{ opacity: 0, scaleY: 0 }}
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
 				transition={{
-					opacity: { duration: 0.15 },
-					scaleY: { type: "spring", stiffness: 500, damping: 30, mass: 0.8 }
+					opacity: { duration: 0.15 }
+					// height: { type: "spring", stiffness: 500, damping: 30, mass: 0.8 }
 				}}
 				onClick={(e) => e.stopPropagation()}
 			>
 				<div className="popup-search-row">
 					<svg
 						className="popup-search-icon"
-						width="14"
-						height="14"
+						width="16"
+						height="16"
 						viewBox="0 0 24 24"
 						fill="none"
 						stroke="currentColor"
-						strokeWidth="2"
+						strokeWidth="2.5"
 						strokeLinecap="round"
 						strokeLinejoin="round"
 					>
@@ -1559,7 +1558,7 @@ function AddAppPopup({
 							return (
 								<div
 									key={app.path}
-									className={`popup-app-row${idx === selectedIndex ? " selected" : ""}`}
+									className={`popup-app-row ${idx === selectedIndex ? "selected" : ""}`}
 									onClick={() => onAdd(app)}
 									onMouseEnter={() => setSelectedIndex(idx)}
 								>
@@ -1570,8 +1569,8 @@ function AddAppPopup({
 											<span className="popup-app-initial">{app.name[0]}</span>
 										)}
 									</div>
-									<span className="popup-app-name">{app.name}</span>
-									<span className="popup-app-pin">+</span>
+									<div className="popup-app-name">{app.name}</div>
+									<PinIcon className="popup-app-pin" />
 								</div>
 							);
 						})
