@@ -760,9 +760,6 @@ function App() {
 	const [settingsCompactGlowEnabled, setSettingsCompactGlowEnabled] = useState(
 		() => localStorage.getItem("bloom-media-compact-glow-enabled") !== "false"
 	);
-	const [settingsCornersEnabled, setSettingsCornersEnabled] = useState(
-		() => localStorage.getItem("bloom-corners-enabled") === "true"
-	);
 	const [mediaLayout, setMediaLayout] = useState<"classic" | "compact">(
 		() => (localStorage.getItem("bloom-media-layout") as "classic" | "compact") || "classic"
 	);
@@ -803,7 +800,6 @@ function App() {
 				setSettingsCompactGlowEnabled(
 					getVal("bloom-media-compact-glow-enabled", "true") !== "false"
 				);
-				setSettingsCornersEnabled(getVal("bloom-corners-enabled", "false") === "true");
 				setTimeFormat24h(getVal("bloom-time-format-24h") === "true");
 
 				const thresholdStr = getVal("bloom-low-battery-threshold", "20");
@@ -939,7 +935,6 @@ function App() {
 			"bloom-media-ambience-enabled": setSettingsAmbienceEnabled,
 			"bloom-media-compact-glow-enabled": setSettingsCompactGlowEnabled,
 			"bloom-media-layout": setMediaLayout,
-			"bloom-corners-enabled": setSettingsCornersEnabled,
 			"bloom-scale": setScale,
 			"bloom-low-battery-threshold": setLowBatteryThreshold,
 			"bloom-dock-enabled": setDockEnabled,
@@ -1760,18 +1755,19 @@ function App() {
 		if (isMusicMode && isHovered) return mediaLayout === "compact" ? 300 : 340;
 		if ((showPowerPulse || showLowBatteryPulse || showUpdatePulse) && !isHovered) return 200;
 
-		let w = 140;
 		if (isMusicMode) {
-			w = 140;
+			let w = 140;
 			if (settingsVisualizerEnabled && isPlaying) w += 30;
 			if (settingsAlbumArtEnabled) w += 30;
 
 			if (isHovered) {
 				w += 60;
 			}
-		}
 
-		return w;
+			return w;
+		}
+		// 180 is the default width for status mode when not hovered and no pulses are active
+		return 180;
 	};
 
 	const getDynamicHeight = () => {
@@ -1804,26 +1800,6 @@ function App() {
 
 	return (
 		<div className="screen" style={{ overflow: "hidden" }}>
-			{/* Screen Corners (Top) */}
-			<AnimatePresence>
-				{isVisible && settingsCornersEnabled && (
-					<>
-						<motion.div
-							className="screen-corner top-left"
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1, filter: "blur(0px)" }}
-							exit={{ opacity: 0, filter: "blur(10px)" }}
-						/>
-						<motion.div
-							className="screen-corner top-right"
-							initial={{ opacity: 0 }}
-							animate={{ opacity: 1, filter: "blur(0px)" }}
-							exit={{ opacity: 0, filter: "blur(10px)" }}
-						/>
-					</>
-				)}
-			</AnimatePresence>
-
 			<div style={{ zoom: scale, width: "100%", display: "flex", justifyContent: "center" }}>
 				<motion.div
 					ref={bloomRef}
