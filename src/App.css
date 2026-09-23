@@ -1006,7 +1006,8 @@ img {
 .premium-album-art {
 	width: 96px;
 	height: 96px;
-	border-radius: 12px;
+	border-radius: 16px;
+	corner-shape: superellipse(1.85);
 	overflow: hidden;
 	background: rgba(255, 255, 255, 0.05);
 	box-shadow:
@@ -1641,7 +1642,8 @@ img {
 .cmp-art {
 	width: 50px;
 	height: 50px;
-	border-radius: 10px;
+	border-radius: 16px;
+	corner-shape: superellipse(1.85);
 	overflow: hidden;
 	flex-shrink: 0;
 	background: rgba(255, 255, 255, 0.05);
