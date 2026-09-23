@@ -182,7 +182,7 @@ function BatteryIcon({
 					y="0.75"
 					width="14"
 					height="8.5"
-					rx="2.4"
+					rx="2.6"
 					stroke="currentColor"
 					strokeOpacity={0.35}
 					strokeWidth="1.1"
