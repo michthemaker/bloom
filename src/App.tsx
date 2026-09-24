@@ -32,6 +32,8 @@ import {
 	RotateCcw
 } from "lucide-react";
 import { inlineSwitch } from "./lib";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { SunDimIcon, Volume02Icon } from "@hugeicons/core-free-icons";
 
 // Pomodoro timer limit.
 const MAX_TIMER_SECONDS = 180 * 60;
@@ -1747,7 +1749,7 @@ function App() {
 	// Calculate width dynamically based on enabled features
 	const getDynamicWidth = () => {
 		if (isCalendarMode) return 480;
-		if (isCommandCenterMode && isHovered) return 350;
+		if (isCommandCenterMode && isHovered) return 480;
 		if (isStatusMode && isHovered) {
 			const totalWidgets = statusWidgets.left.length + statusWidgets.right.length;
 			return Math.min(200 + totalWidgets * 50, 380);
@@ -1835,8 +1837,8 @@ function App() {
 						...(() => {
 							const bRadius = inlineSwitch(
 								true,
-								[isCalendarMode, 48],
-								[isHovered && (isMusicMode || isCommandCenterMode), 24],
+								[isCalendarMode || isCommandCenterMode, 48],
+								[isHovered && isMusicMode, 24],
 								{ default: 14 }
 							);
 							return {
@@ -2418,6 +2420,13 @@ function App() {
 											exit={{ opacity: 0, filter: "blur(4px)", transition: { duration: 0.1 } }}
 											transition={{ type: "spring", stiffness: 400, damping: 30 }}
 										>
+											{/*
+
+												wifi circular, bluetooth circular, dark mode, battery saver circle,
+
+												vertical pill volume, vertical pill brightness
+												*/}
+
 											{/* Pills Grid */}
 											<div className="cc-pills-grid">
 												{/* Wi-Fi Pill */}
@@ -2570,13 +2579,9 @@ function App() {
 											</div>
 
 											{/* Classic Sliders Area */}
-											<div className="cc-classic-sliders-area">
+											<div className="cc-vertical-sliders-area">
 												{/* Volume Slider */}
-												<div className="cc-classic-slider-row">
-													<div className="cc-classic-slider-label">
-														<VolumeLowIcon style={{ opacity: 0.5 }} />
-														<span>Volume</span>
-													</div>
+												<div className="cc-classic-slider-column">
 													<div className="cc-classic-slider-track">
 														<input
 															type="range"
@@ -2591,18 +2596,19 @@ function App() {
 														/>
 														<div
 															className="cc-classic-fill"
-															style={{ width: `${volume * 100}%` }}
+															style={{ height: `${volume * 100}%` }}
 														/>
 													</div>
-													<span className="cc-classic-percentage">{Math.round(volume * 100)}%</span>
+													<HugeiconsIcon
+														icon={Volume02Icon}
+														size={20}
+														strokeWidth={1.7}
+														className={`cc-classic-slider-icon ${volume >= 0.1 ? "volume-past-threshold" : ""}`}
+													/>
 												</div>
 
 												{/* Brightness Slider */}
-												<div className="cc-classic-slider-row">
-													<div className="cc-classic-slider-label">
-														<BrightnessLowIcon />
-														<span>Brightness</span>
-													</div>
+												<div className="cc-classic-slider-column">
 													<div className="cc-classic-slider-track">
 														<input
 															type="range"
@@ -2617,10 +2623,15 @@ function App() {
 														/>
 														<div
 															className="cc-classic-fill"
-															style={{ width: `${currentBrightness}%` }}
+															style={{ height: `${currentBrightness}%` }}
 														/>
 													</div>
-													<span className="cc-classic-percentage">{currentBrightness}%</span>
+													<HugeiconsIcon
+														icon={SunDimIcon}
+														size={20}
+														strokeWidth={1.7}
+														className={`cc-classic-slider-icon ${currentBrightness >= 10 ? "brightness-past-threshold" : ""}`}
+													/>
 												</div>
 											</div>
 										</motion.div>

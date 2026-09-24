@@ -1345,6 +1345,11 @@ img {
 	overflow: hidden;
 }
 
+.command-center-content-minimal .cc-pills-grid,
+.command-center-content-minimal .cc-circular-actions-row {
+	display: none !important;
+}
+
 /* Pills Grid */
 .cc-pills-grid {
 	display: grid;
@@ -1358,8 +1363,9 @@ img {
 	display: flex;
 	align-items: center;
 	gap: 8px;
-	padding: 5px 8px;
-	border-radius: 10px;
+	padding: 10px 8px;
+	border-radius: 14px;
+	corner-shape: superellipse(1.85);
 	background: var(--bloom-group-bg, rgba(255, 255, 255, 0.04));
 	border: 1px solid var(--bloom-border, rgba(255, 255, 255, 0.02));
 	cursor: pointer;
@@ -1477,94 +1483,82 @@ img {
 }
 
 /* Classic Sliders Area */
-.cc-classic-sliders-area {
+.cc-vertical-sliders-area {
 	display: flex;
-	flex-direction: column;
+	margin-top: 8px;
 	gap: 8px;
 	width: 100%;
 }
 
-.cc-classic-slider-row {
+.cc-classic-slider-column {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
-	gap: 10px;
-	width: 100%;
-	height: 18px;
+	gap: 6px;
 	position: relative;
 }
 
-.cc-classic-slider-label {
-	display: flex;
-	align-items: center;
-	gap: 6px;
-	width: 75px;
-	font-size: 9px;
-	font-weight: 600;
-	color: var(--bloom-text-muted, rgba(255, 255, 255, 0.65));
-}
-
-.cc-classic-slider-label svg {
-	opacity: 0.7;
-	width: 12px;
-	height: 12px;
-}
-
 .cc-classic-slider-track {
-	flex: 1;
-	height: 6px;
-	border-radius: 3px;
-	background: var(--bloom-group-bg, rgba(255, 255, 255, 0.08));
+	height: 112px;
+	width: 48px;
+	border-radius: 18px;
+	corner-shape: superellipse(1.85);
+	background: rgba(255, 255, 255, 0.2);
+	overflow: hidden;
 	position: relative;
 	display: flex;
 	align-items: center;
 	transition: background 0.15s ease;
 }
 
-.cc-classic-slider-row:hover .cc-classic-slider-track {
-	background: var(--bloom-border, rgba(255, 255, 255, 0.12));
-}
-
 .cc-classic-fill {
 	background: var(--bloom-text, rgba(255, 255, 255, 0.9));
-	border-radius: 3px;
-	height: 100%;
+	width: 100%;
 	position: absolute;
 	left: 0;
-	top: 0;
+	bottom: 0;
 	pointer-events: none;
 	transition:
-		width 0.05s linear,
+		height 0.05s linear,
 		background 0.15s ease;
-}
-
-.cc-classic-slider-row:hover .cc-classic-fill {
-	background: var(--bloom-text, #ffffff);
-	box-shadow: 0 0 4px var(--bloom-border, rgba(255, 255, 255, 0.15));
-}
-
-.cc-classic-percentage {
-	width: 28px;
-	text-align: right;
-	font-size: 9px;
-	font-weight: 600;
-	color: var(--bloom-text-muted, rgba(255, 255, 255, 0.55));
-	font-variant-numeric: tabular-nums;
-}
-
-.cc-classic-slider-row:hover .cc-classic-percentage {
-	color: var(--bloom-text, rgba(255, 255, 255, 0.85));
 }
 
 .cc-classic-input {
 	position: absolute;
-	top: -6px;
-	left: 0;
-	width: 100%;
-	height: 18px;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%) rotate(-90deg);
+	width: 112px; /* match the track height */
+	height: 48px; /* match the track width */
 	opacity: 0;
-	cursor: pointer;
+	cursor: grab;
 	z-index: 4;
 	margin: 0;
+	appearance: none;
+	-webkit-appearance: none;
+}
+
+.cc-classic-input:active {
+	cursor: grabbing;
+}
+
+.cc-classic-slider-icon {
+	position: absolute;
+	bottom: 12px;
+	left: 50%;
+	transform: translateX(-50%);
+	transition: color 0.15s ease;
+	pointer-events: none;
+	color: white;
+	z-index: 1;
+}
+
+.cc-classic-slider-icon.volume-past-threshold {
+	color: royalblue;
+}
+
+.cc-classic-slider-icon.brightness-past-threshold {
+	color: darkorange;
 }
 
 /* Light Mode overrides for Notch App components */
