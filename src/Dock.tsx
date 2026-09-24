@@ -881,6 +881,7 @@ const Dock = memo(function Dock() {
 												e.stopPropagation();
 												if (!isDragging) handleAppClick(app);
 											}}
+											className="draggable-element dock-icon-container"
 										>
 											<motion.div
 												className="dock-icon-wrapper"

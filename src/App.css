@@ -7,6 +7,16 @@ body {
 	font-family: "SF Pro Display", "Segoe UI";
 }
 
+.draggable-element {
+	/* 1. Custom asset + fallback keyword (Mandatory syntax) */
+	cursor: url("/cursors/grab.svg"), grab;
+}
+
+.draggable-element:active {
+	/* 2. Swaps to your closed hand asset when clicking/dragging */
+	cursor: url("/cursors/grabbing.svg"), grabbing;
+}
+
 /* Never start native image drags from the notch/player UI */
 img {
 	-webkit-user-drag: none;
@@ -1347,7 +1357,7 @@ img {
 
 .command-center-content-minimal .cc-pills-grid,
 .command-center-content-minimal .cc-circular-actions-row {
-	display: none !important;
+	/*display: none !important;*/
 }
 
 /* Pills Grid */
@@ -1531,15 +1541,10 @@ img {
 	width: 112px; /* match the track height */
 	height: 48px; /* match the track width */
 	opacity: 0;
-	cursor: grab;
 	z-index: 4;
 	margin: 0;
 	appearance: none;
 	-webkit-appearance: none;
-}
-
-.cc-classic-input:active {
-	cursor: grabbing;
 }
 
 .cc-classic-slider-icon {

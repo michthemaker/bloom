@@ -9,6 +9,15 @@ body {
 	font-family: "SF Pro Display", "Segoe UI";
 }
 
+.draggable-element {
+	/* 1. Custom asset + fallback keyword (Mandatory syntax) */
+	cursor: url("/cursors/grab.svg"), grab;
+}
+
+.draggable-element:active {
+	/* 2. Swaps to your closed hand asset when clicking/dragging */
+	cursor: url("/cursors/grabbing.svg"), grabbing;
+}
 .dock-container {
 	width: 100vw;
 	height: 100vh;
@@ -261,12 +270,15 @@ body {
 	corner-top-right-shape: scoop;
 }
 
+.dock-icon-container {
+	cursor: initial;
+}
+
 .dock-icon-wrapper {
 	position: relative;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	cursor: pointer;
 	-webkit-app-region: no-drag;
 }
 

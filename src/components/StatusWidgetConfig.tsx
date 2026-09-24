@@ -68,7 +68,7 @@ function PoolChip({ id }: { id: string }) {
 	return (
 		<div
 			ref={setNodeRef}
-			className={`widget-pill widget-pill--available ${isDragging ? "dragging" : ""}`}
+			className={`widget-pill draggable-element widget-pill--available ${isDragging ? "dragging" : ""}`}
 			{...listeners}
 			{...attributes}
 		>
@@ -114,7 +114,7 @@ function SortablePlacedChip({
 			style={style}
 			className={`widget-pill widget-pill--placed ${isDragging ? "dragging" : ""}`}
 		>
-			<div {...attributes} {...listeners} className="widget-pill-drag-handle">
+			<div {...attributes} {...listeners} className="widget-pill-drag-handle draggable-element">
 				<Icon size={12} strokeWidth={2} style={{ color: def.color }} />
 				<span>{def.label}</span>
 			</div>

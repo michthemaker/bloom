@@ -18,6 +18,16 @@ body {
 	overflow: hidden;
 }
 
+.draggable-element {
+	/* 1. Custom asset + fallback keyword (Mandatory syntax) */
+	cursor: url("/cursors/grab.svg"), grab;
+}
+
+.draggable-element:active {
+	/* 2. Swaps to your closed hand asset when clicking/dragging */
+	cursor: url("/cursors/grabbing.svg"), grabbing;
+}
+
 #root {
 	width: 100vw;
 	height: 100vh;
@@ -817,21 +827,15 @@ input:checked + .slider:before {
 	display: inline-flex;
 	align-items: center;
 	gap: 5px;
-	cursor: grab;
 	padding: 2px 4px;
 	border-radius: 4px;
 	flex: 1;
 	min-width: 0;
 }
 
-.widget-pill-drag-handle:active {
-	cursor: grabbing;
-}
-
 .widget-pill--available {
 	background: var(--bloom-group-bg, rgba(255, 255, 255, 0.03));
 	border: 1px dashed var(--bloom-border, rgba(255, 255, 255, 0.08));
-	cursor: grab;
 	transition:
 		background 0.1s,
 		border-color 0.1s;
@@ -840,10 +844,6 @@ input:checked + .slider:before {
 .widget-pill--available:hover {
 	background: rgba(255, 255, 255, 0.06);
 	border-color: rgba(255, 255, 255, 0.12);
-}
-
-.widget-pill--available:active {
-	cursor: grabbing;
 }
 
 .widget-pill--dragging {
