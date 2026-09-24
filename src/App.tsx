@@ -33,7 +33,16 @@ import {
 } from "lucide-react";
 import { inlineSwitch } from "./lib";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { SunDimIcon, Volume02Icon } from "@hugeicons/core-free-icons";
+import {
+	Archive02Icon,
+	BatteryPlusIcon,
+	Moon01Icon,
+	Notification01Icon,
+	Refresh01Icon,
+	Settings01Icon,
+	SunDimIcon,
+	Volume02Icon
+} from "@hugeicons/core-free-icons";
 
 // Pomodoro timer limit.
 const MAX_TIMER_SECONDS = 180 * 60;
@@ -132,26 +141,6 @@ function WifiIcon({ connected }: { connected: boolean }) {
 			<path d="M1.42 9a16 16 0 0 1 21.16 0" />
 			<path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
 			<line x1="12" y1="20" x2="12.01" y2="20" />
-		</svg>
-	);
-}
-
-function TrayIcon() {
-	return (
-		<svg
-			width="14"
-			height="14"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2.5"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<rect x="3" y="3" width="6" height="6" rx="1" />
-			<rect x="15" y="3" width="6" height="6" rx="1" />
-			<rect x="15" y="15" width="6" height="6" rx="1" />
-			<rect x="3" y="15" width="6" height="6" rx="1" />
 		</svg>
 	);
 }
@@ -1778,7 +1767,8 @@ function App() {
 		}
 		// Sized to the calendar's week-row count plus the timer's fixed content.
 		if (bloomMode === "calendar") return calendarMonthRows >= 6 ? 305 : 273;
-		if (bloomMode === "command-center") return isHovered ? 230 : 36;
+		if (bloomMode === "command-center")
+			return isHovered ? 160 /* 230 "auto" get the dynamic height from dev tools */ : 80;
 		if (bloomMode === "status") return 36;
 		if (isMusicMode && isHovered) {
 			const hasProgressBar = (mediaInfo.duration_ms ?? 0) > 0;
@@ -1837,7 +1827,8 @@ function App() {
 						...(() => {
 							const bRadius = inlineSwitch(
 								true,
-								[isCalendarMode || isCommandCenterMode, 48],
+								[isCalendarMode, 48],
+								[isCommandCenterMode, 30],
 								[isHovered && isMusicMode, 24],
 								{ default: 14 }
 							);
@@ -1859,6 +1850,7 @@ function App() {
 						setBloomMode(mediaInfo.has_media && isPlaying ? "music" : "status");
 					}}
 					onHoverEnd={() => {
+						// uncomment onMouseLeave and remove the return line
 						setIsHovered(false);
 						const targetMode =
 							mediaInfo.has_media && isPlaying && settingsMusicCompactNotch ? "music" : "status";
@@ -2413,6 +2405,7 @@ function App() {
 								<AnimatePresence>
 									{isCommandCenterMode && (
 										<motion.div
+											// margin-top: 8px;
 											className="command-center-content-minimal"
 											onClick={(e) => e.stopPropagation()}
 											initial={{ opacity: 0 }}
@@ -2514,70 +2507,6 @@ function App() {
 												</div>
 											</div>
 
-											{/* Circular Actions Row */}
-											<div className="cc-circular-actions-row">
-												<button
-													className={`cc-circular-btn ${dndActive ? "active" : ""}`}
-													onClick={(e) => {
-														e.stopPropagation();
-														setDndActive((prev) => !prev);
-													}}
-													title={`Focus / DND: ${dndActive ? "On" : "Off"}`}
-												>
-													<MoonIcon />
-												</button>
-												<button
-													className={`cc-circular-btn ${batterySaverEnabled ? "active" : ""}`}
-													onClick={(e) => {
-														e.stopPropagation();
-														openBatterySaverSettings();
-													}}
-													title={`Energy Saver: ${batterySaverEnabled ? "On" : "Off"} — Click to open Settings`}
-												>
-													<BatterySaverIcon />
-												</button>
-												<button
-													className="cc-circular-btn"
-													onClick={(e) => {
-														e.stopPropagation();
-														openSystemTray(e);
-													}}
-													title="System Tray"
-												>
-													<TrayIcon />
-												</button>
-												<button
-													className="cc-circular-btn"
-													onClick={(e) => {
-														e.stopPropagation();
-														invoke("open_notification_center");
-													}}
-													title="Notification Center"
-												>
-													<BellIcon />
-												</button>
-												<button
-													className="cc-circular-btn"
-													onClick={(e) => {
-														e.stopPropagation();
-														openSettingsWindow();
-													}}
-													title="Bloom Settings"
-												>
-													<SettingsIcon />
-												</button>
-												<button
-													className="cc-circular-btn"
-													onClick={(e) => {
-														e.stopPropagation();
-														invoke("restart_bloom");
-													}}
-													title="Restart Bloom"
-												>
-													<ReloadIcon />
-												</button>
-											</div>
-
 											{/* Classic Sliders Area */}
 											<div className="cc-vertical-sliders-area">
 												{/* Volume Slider */}
@@ -2633,6 +2562,77 @@ function App() {
 														className={`cc-classic-slider-icon ${currentBrightness >= 10 ? "brightness-past-threshold" : ""}`}
 													/>
 												</div>
+											</div>
+
+											{/* Circular Actions Column */}
+											<div className="cc-circular-actions-column">
+												<button
+													className={`cc-circular-btn ${dndActive ? "active" : ""}`}
+													onClick={(e) => {
+														e.stopPropagation();
+														setDndActive((prev) => !prev);
+													}}
+													title={`Focus / DND: ${dndActive ? "On" : "Off"}`}
+												>
+													<HugeiconsIcon icon={Moon01Icon} size={20} strokeWidth={1.7} />
+												</button>
+												<button
+													className={`cc-circular-btn ${batterySaverEnabled ? "active" : ""}`}
+													onClick={(e) => {
+														e.stopPropagation();
+														openBatterySaverSettings();
+													}}
+													title={`Energy Saver: ${batterySaverEnabled ? "On" : "Off"} — Click to open Settings`}
+												>
+													<HugeiconsIcon
+														icon={BatteryPlusIcon}
+														size={20}
+														strokeWidth={1.7}
+														style={{
+															transform: "translateX(1px)"
+														}}
+													/>
+												</button>
+												<button
+													className="cc-circular-btn"
+													onClick={(e) => {
+														e.stopPropagation();
+														openSystemTray(e);
+													}}
+													title="System Tray"
+												>
+													<HugeiconsIcon icon={Archive02Icon} size={20} strokeWidth={1.7} />
+												</button>
+												<button
+													className="cc-circular-btn"
+													onClick={(e) => {
+														e.stopPropagation();
+														invoke("open_notification_center");
+													}}
+													title="Notification Center"
+												>
+													<HugeiconsIcon icon={Notification01Icon} size={20} strokeWidth={1.7} />
+												</button>
+												<button
+													className="cc-circular-btn"
+													onClick={(e) => {
+														e.stopPropagation();
+														openSettingsWindow();
+													}}
+													title="Bloom Settings"
+												>
+													<HugeiconsIcon icon={Settings01Icon} size={20} strokeWidth={1.7} />
+												</button>
+												<button
+													className="cc-circular-btn"
+													onClick={(e) => {
+														e.stopPropagation();
+														invoke("restart_bloom");
+													}}
+													title="Restart Bloom"
+												>
+													<HugeiconsIcon icon={Refresh01Icon} size={20} strokeWidth={1.7} />
+												</button>
 											</div>
 										</motion.div>
 									)}
@@ -2824,42 +2824,6 @@ function BluetoothIcon() {
 	);
 }
 
-function SettingsIcon() {
-	return (
-		<svg
-			width="14"
-			height="14"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2.5"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			style={{ opacity: 0.9 }}
-		>
-			<circle cx="12" cy="12" r="3" />
-			<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
-		</svg>
-	);
-}
-
-function MoonIcon() {
-	return (
-		<svg
-			width="18"
-			height="18"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2.5"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-		</svg>
-	);
-}
-
 function DockIcon() {
 	return (
 		<svg
@@ -2895,60 +2859,6 @@ function NotchIcon() {
 		>
 			<path d="M4 3h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
 			<path d="M9 9v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V9" />
-		</svg>
-	);
-}
-
-function BellIcon() {
-	return (
-		<svg
-			width="14"
-			height="14"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2.5"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9z" />
-			<path d="M13.73 21a2 2 0 0 1-3.46 0" />
-		</svg>
-	);
-}
-
-function ReloadIcon() {
-	return (
-		<svg
-			width="14"
-			height="14"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2.5"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-		</svg>
-	);
-}
-
-function BatterySaverIcon() {
-	return (
-		<svg
-			width="18"
-			height="18"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2.5"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<rect x="2" y="7" width="16" height="10" rx="2" />
-			<path d="M22 11v2" />
-			<path d="M6 12h4l2-3v6l-2-3H6" />
 		</svg>
 	);
 }
