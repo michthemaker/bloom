@@ -36,12 +36,14 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import {
 	Archive02Icon,
 	BatteryPlusIcon,
+	Bluetooth,
 	Moon01Icon,
 	Notification01Icon,
 	Refresh01Icon,
 	Settings01Icon,
 	SunDimIcon,
-	Volume02Icon
+	Volume02Icon,
+	Wifi01Icon
 } from "@hugeicons/core-free-icons";
 
 // Pomodoro timer limit.
@@ -124,26 +126,6 @@ const playTimerChime = () => {
 };
 
 // Simple SVG icons
-function WifiIcon({ connected }: { connected: boolean }) {
-	return (
-		<svg
-			width="18"
-			height="18"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2.5"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-			opacity={connected ? 1 : 0.4}
-		>
-			<path d="M5 12.55a11 11 0 0 1 14.08 0" />
-			<path d="M1.42 9a16 16 0 0 1 21.16 0" />
-			<path d="M8.53 16.11a6 6 0 0 1 6.95 0" />
-			<line x1="12" y1="20" x2="12.01" y2="20" />
-		</svg>
-	);
-}
 
 function BatteryIcon({
 	charging,
@@ -1797,7 +1779,7 @@ function App() {
 					ref={bloomRef}
 					className={`bloom ${isHovered ? "expanded" : ""} ${isImpacted ? "is-impacted" : ""}`}
 					onMouseEnter={() => setIsNotchHovered(true)}
-					onMouseLeave={() => setIsNotchHovered(false)}
+					// onMouseLeave={() => setIsNotchHovered(false)}
 					onWheel={handleWheel}
 					initial={{
 						y: 250,
@@ -1851,6 +1833,7 @@ function App() {
 					}}
 					onHoverEnd={() => {
 						// uncomment onMouseLeave and remove the return line
+						return;
 						setIsHovered(false);
 						const targetMode =
 							mediaInfo.has_media && isPlaying && settingsMusicCompactNotch ? "music" : "status";
@@ -2422,27 +2405,6 @@ function App() {
 
 											{/* Pills Grid */}
 											<div className="cc-pills-grid">
-												{/* Wi-Fi Pill */}
-												<div
-													className={`cc-pill-tile ${wifiEnabled ? "active" : ""}`}
-													onClick={(e) => {
-														e.stopPropagation();
-														toggleWifi();
-													}}
-													onContextMenu={handleWifiRightClick}
-													title="Left-click to toggle, Right-click for Settings"
-												>
-													<div className="cc-pill-icon-wrapper">
-														<WifiIcon connected={wifiEnabled} />
-													</div>
-													<div className="cc-pill-info">
-														<span className="cc-pill-title">Wi-Fi</span>
-														<span className="cc-pill-status">
-															{wifiEnabled ? "Connected" : "Off"}
-														</span>
-													</div>
-												</div>
-
 												{/* Dock Mode Pill */}
 												<div
 													className={`cc-pill-tile ${dockMode === "fixed" ? "active" : ""}`}
@@ -2460,27 +2422,6 @@ function App() {
 																: dockMode === "smart"
 																	? "Smart"
 																	: "Peek"}
-														</span>
-													</div>
-												</div>
-
-												{/* Bluetooth Pill */}
-												<div
-													className={`cc-pill-tile ${bluetoothEnabled ? "active" : ""}`}
-													onClick={(e) => {
-														e.stopPropagation();
-														toggleBluetooth();
-													}}
-													onContextMenu={handleBluetoothRightClick}
-													title="Left-click to toggle, Right-click for Settings"
-												>
-													<div className="cc-pill-icon-wrapper">
-														<BluetoothIcon />
-													</div>
-													<div className="cc-pill-info">
-														<span className="cc-pill-title">Bluetooth</span>
-														<span className="cc-pill-status">
-															{bluetoothEnabled ? "On" : "Off"}
 														</span>
 													</div>
 												</div>
@@ -2535,7 +2476,6 @@ function App() {
 														className={`cc-classic-slider-icon ${volume >= 0.1 ? "volume-past-threshold" : ""}`}
 													/>
 												</div>
-
 												{/* Brightness Slider */}
 												<div className="cc-classic-slider-column">
 													<div className="cc-classic-slider-track">
@@ -2575,6 +2515,28 @@ function App() {
 													title={`Focus / DND: ${dndActive ? "On" : "Off"}`}
 												>
 													<HugeiconsIcon icon={Moon01Icon} size={20} strokeWidth={1.7} />
+												</button>
+												<button
+													className={`cc-circular-btn ${wifiEnabled ? "active" : ""}`}
+													onClick={(e) => {
+														e.stopPropagation();
+														toggleWifi();
+													}}
+													onContextMenu={handleWifiRightClick}
+													title="Left-click to toggle, Right-click for Settings"
+												>
+													<HugeiconsIcon icon={Wifi01Icon} size={20} strokeWidth={1.7} />
+												</button>
+												<button
+													className={`cc-circular-btn ${bluetoothEnabled ? "active" : ""}`}
+													onClick={(e) => {
+														e.stopPropagation();
+														toggleBluetooth();
+													}}
+													onContextMenu={handleBluetoothRightClick}
+													title="Left-click to toggle, Right-click for Settings"
+												>
+													<HugeiconsIcon icon={Bluetooth} size={20} strokeWidth={1.7} />
 												</button>
 												<button
 													className={`cc-circular-btn ${batterySaverEnabled ? "active" : ""}`}
@@ -2804,23 +2766,6 @@ function Calendar() {
 				{days}
 			</div>
 		</div>
-	);
-}
-
-function BluetoothIcon() {
-	return (
-		<svg
-			width="18"
-			height="18"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2.5"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<path d="M6.5 6.5l11 11L12 23V1l5.5 5.5-11 11" />
-		</svg>
 	);
 }
 

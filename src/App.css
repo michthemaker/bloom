@@ -1451,7 +1451,7 @@ img {
 /* Circular Actions Column */
 .cc-circular-actions-column {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	gap: 12px;
 	justify-content: space-between;
 	/*background-color: blue;*/
