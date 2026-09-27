@@ -26,10 +26,10 @@
   - [ ] `NotchTab.tsx`
   - [ ] `OverlaysTab.tsx`
 
-- [ ] **#10 — Reusable left-click context menu (Select component)**
-  - [ ] Create `src/components/ContextMenu.tsx` — port pattern from `Dock.tsx` L1164–1344
-  - [ ] Create styles in `src/components/ContextMenu.css` — port from `Dock.css` `.context-menu`, `.menu-item`, `.submenu` etc.
-  - [ ] Wire up `set_menu_open` invoke on open/close so Bloom doesn't auto-hide while menu is open
+- [x] **#10 — Reusable left-click context menu (Select component)**
+  - [x] Create `src/components/ContextMenu.tsx` — port pattern from `Dock.tsx` L1164–1344
+  - [x] Create styles in `src/components/ContextMenu.css` — port from `Dock.css` `.context-menu`, `.menu-item`, `.submenu` etc.
+  - [x] Wire up `set_menu_open` invoke on open/close so Bloom doesn't auto-hide while menu is open
 
 🌫️ **The Fog (need answers before coding):**
 

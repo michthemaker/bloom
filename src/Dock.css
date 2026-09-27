@@ -630,8 +630,8 @@ body {
 	color: orangered;
 }
 
-.popup-app-row:hover .popup-app-pin {
-}
+/*.popup-app-row:hover .popup-app-pin {
+}*/
 
 .popup-loading {
 	display: flex;
