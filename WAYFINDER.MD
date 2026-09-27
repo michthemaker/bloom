@@ -9,9 +9,10 @@
   - [x] `App.tsx` L503–523 — remove state + `listen("update-available")` effect
   - [x] `App.tsx` L1729 — remove `showUpdatePulse` from pulse width logic
   - [x] `App.tsx` L2168–2183 — remove the update pulse animation view
-  - [ ] `GeneralTab.tsx` — remove toggle row + prop
-  - [ ] `Settings.tsx` — remove prop pass-through
-  - [ ] `useSettings.ts` — remove the toggle handler
+  - [x] `GeneralTab.tsx` — remove toggle row + prop
+  - [x] `Settings.tsx` — remove prop pass-through
+  - [x] `useSettings.ts` — remove the toggle handler
+  - [x] `SETTINGS.md` — remove the key from documentation
 
 - [ ] **#5 — Lucide audit (replace progressively with HugeIcons)**
   - [ ] `App.tsx`: `Cpu, MemoryStick, HardDrive, ArrowUpDown, BellRing, Play, Pause, RotateCcw`

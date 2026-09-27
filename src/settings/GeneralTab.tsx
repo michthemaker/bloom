@@ -1,4 +1,4 @@
-import { Power, Download, Clock, BatteryWarning, RefreshCw, LogOut } from "lucide-react";
+import { Power, Clock, BatteryWarning, RefreshCw, LogOut } from "lucide-react";
 import { SettingRow } from "./SettingRow";
 
 interface GeneralTabProps {
@@ -6,8 +6,6 @@ interface GeneralTabProps {
 	toggleAutostart: () => void;
 	timeFormat24h: boolean;
 	toggleTimeFormat24h: () => void;
-	showUpdateIndicator: boolean;
-	toggleUpdateIndicator: () => void;
 	lowBatteryThreshold: number;
 	handleThresholdChange: (val: number) => void;
 	restartBloom: () => void;
@@ -19,8 +17,6 @@ export function GeneralTab({
 	toggleAutostart,
 	timeFormat24h,
 	toggleTimeFormat24h,
-	showUpdateIndicator,
-	toggleUpdateIndicator,
 	lowBatteryThreshold,
 	handleThresholdChange,
 	restartBloom,
@@ -33,17 +29,6 @@ export function GeneralTab({
 				<SettingRow icon={Power} label="Launch at Login" desc="Open Bloom automatically">
 					<label className="toggle-switch">
 						<input type="checkbox" checked={autostart} onChange={toggleAutostart} />
-						<span className="slider"></span>
-					</label>
-				</SettingRow>
-
-				<SettingRow
-					icon={Download}
-					label="Update Indicator"
-					desc="Show green dot when update available"
-				>
-					<label className="toggle-switch">
-						<input type="checkbox" checked={showUpdateIndicator} onChange={toggleUpdateIndicator} />
 						<span className="slider"></span>
 					</label>
 				</SettingRow>

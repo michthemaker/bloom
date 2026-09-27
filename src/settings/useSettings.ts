@@ -44,9 +44,6 @@ export function useSettings() {
 	const [cornersEnabled, setCornersEnabled] = useState(
 		() => localStorage.getItem("bloom-corners-enabled") === "true"
 	);
-	const [showUpdateIndicator, setShowUpdateIndicator] = useState(
-		() => localStorage.getItem("bloom-show-update-indicator") !== "false"
-	);
 	const [timeFormat24h, setTimeFormat24h] = useState(
 		() => localStorage.getItem("bloom-time-format-24h") === "true"
 	);
@@ -139,7 +136,6 @@ export function useSettings() {
 			apply(getVal("bloom-media-compact-glow-enabled"), setMediaCompactGlowEnabled, readBool);
 			apply(getVal("bloom-corners-enabled"), setCornersEnabled, readBool);
 			apply(getVal("bloom-time-format-24h"), setTimeFormat24h, readBool);
-			apply(getVal("bloom-show-update-indicator"), setShowUpdateIndicator, readBool);
 			apply(getVal("bloom-auto-update"), setAutoUpdate, readBool);
 			apply(getVal("bloom-volume-edge-enabled"), setVolumeEdgeEnabled, readBool);
 			apply(getVal("bloom-brightness-edge-enabled"), setBrightnessEdgeEnabled, readBool);
@@ -210,7 +206,6 @@ export function useSettings() {
 		"bloom-media-compact-glow-enabled": setMediaCompactGlowEnabled,
 		"bloom-media-layout": setMediaLayout,
 		"bloom-corners-enabled": setCornersEnabled,
-		"bloom-show-update-indicator": setShowUpdateIndicator,
 		"bloom-time-format-24h": setTimeFormat24h,
 		"bloom-low-battery-threshold": setLowBatteryThreshold,
 		"bloom-scale": setScale,
@@ -425,12 +420,6 @@ export function useSettings() {
 		const next = !cornersEnabled;
 		setCornersEnabled(next);
 		saveSetting("bloom-corners-enabled", String(next));
-	};
-
-	const toggleUpdateIndicator = () => {
-		const next = !showUpdateIndicator;
-		setShowUpdateIndicator(next);
-		saveSetting("bloom-show-update-indicator", String(next));
 	};
 
 	const toggleTimeFormat24h = () => {
@@ -650,8 +639,6 @@ export function useSettings() {
 		handleThresholdChange,
 		timeFormat24h,
 		toggleTimeFormat24h,
-		showUpdateIndicator,
-		toggleUpdateIndicator,
 		scale,
 		handleScaleChange,
 		cornersEnabled,
