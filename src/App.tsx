@@ -4,7 +4,6 @@ import { listen } from "@tauri-apps/api/event";
 import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { getVersion } from "@tauri-apps/api/app";
-import type { UpdateCheckResult } from "./updater";
 import "./App.css";
 import { initTheme } from "./theme";
 import {
@@ -199,41 +198,6 @@ function BatteryIcon({
 	);
 }
 
-function GreenDownArrowIcon() {
-	return (
-		<div
-			style={{
-				display: "inline-flex",
-				alignItems: "center",
-				justifyContent: "center",
-				width: "18px",
-				height: "18px",
-				borderRadius: "50%",
-				background: "rgba(50, 215, 75, 0.15)",
-				border: "1px solid rgba(50, 215, 75, 0.35)",
-				boxShadow: "0 0 8px rgba(50, 215, 75, 0.25)",
-				flexShrink: 0,
-				verticalAlign: "middle"
-			}}
-		>
-			<svg
-				width="10"
-				height="10"
-				viewBox="0 0 24 24"
-				fill="none"
-				stroke="#32D74B"
-				strokeWidth="3"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-			>
-				<line x1="12" y1="4" x2="12" y2="16"></line>
-				<polyline points="18 10 12 16 6 10"></polyline>
-				<line x1="6" y1="20" x2="18" y2="20"></line>
-			</svg>
-		</div>
-	);
-}
-
 export const Visualizer = memo(function Visualizer({
 	isPlaying,
 	bars = 5,
@@ -420,7 +384,6 @@ function App() {
 
 	const [eventPeek, setEventPeek] = useState(false);
 	const eventPeekTimeoutRef = useRef<any>(null);
-	const updatePulseTimerRef = useRef<any>(null);
 	const triggerEventPeek = useCallback((duration = 3000) => {
 		setEventPeek(true);
 		if (eventPeekTimeoutRef.current) clearTimeout(eventPeekTimeoutRef.current);
@@ -498,46 +461,6 @@ function App() {
 	useEffect(() => {
 		setWindowLabel(getCurrentWebviewWindow().label);
 	}, []);
-
-	// Update state
-	const [updateAvailable, setUpdateAvailable] = useState(false);
-	const [showUpdateIndicator, setShowUpdateIndicator] = useState(
-		() => localStorage.getItem("bloom-show-update-indicator") !== "false"
-	);
-	const [showUpdatePulse, setShowUpdatePulse] = useState(false);
-
-	useEffect(() => {
-		if (windowLabel !== "main") return;
-
-		let unlisten: (() => void) | undefined;
-		let disposed = false;
-
-		listen<UpdateCheckResult>("update-available", (event) => {
-			if (!event.payload.available) return;
-			setUpdateAvailable(true);
-			setShowUpdatePulse(true);
-			if (notchMode === "peek") triggerEventPeek(6000);
-			if (updatePulseTimerRef.current) clearTimeout(updatePulseTimerRef.current);
-			updatePulseTimerRef.current = setTimeout(() => {
-				setShowUpdatePulse(false);
-			}, 6000);
-		}).then((fn) => {
-			if (disposed) fn();
-			else unlisten = fn;
-		});
-
-		invoke<UpdateCheckResult>("get_update_state")
-			.then((state) => {
-				if (state.available) setUpdateAvailable(true);
-			})
-			.catch((e) => console.error("Failed to read update state:", e));
-
-		return () => {
-			disposed = true;
-			unlisten?.();
-			if (updatePulseTimerRef.current) clearTimeout(updatePulseTimerRef.current);
-		};
-	}, [windowLabel, notchMode, triggerEventPeek]);
 
 	const [isVisible, setIsVisible] = useState(true);
 	const [isImpacted, setIsImpacted] = useState(false);
@@ -921,7 +844,6 @@ function App() {
 					}
 				} catch {}
 			},
-			"bloom-show-update-indicator": (value) => setShowUpdateIndicator(String(value) === "true"),
 			"bloom-time-format-24h": setTimeFormat24h
 		},
 		[windowLabel]
@@ -1726,7 +1648,7 @@ function App() {
 			return Math.min(200 + totalWidgets * 50, 380);
 		}
 		if (isMusicMode && isHovered) return mediaLayout === "compact" ? 300 : 340;
-		if ((showPowerPulse || showLowBatteryPulse || showUpdatePulse) && !isHovered) return 200;
+		if ((showPowerPulse || showLowBatteryPulse) && !isHovered) return 200;
 
 		if (isMusicMode) {
 			let w = 140;
@@ -2166,48 +2088,31 @@ function App() {
 										>
 											<div className="main-row">
 												<AnimatePresence mode="wait">
-													{(showPowerPulse || showLowBatteryPulse || showUpdatePulse) &&
-													!isHovered ? (
-														showUpdatePulse ? (
-															<motion.div
-																key="update-pulse-view"
-																initial={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
-																animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-																exit={{ opacity: 0, scale: 1.05, filter: "blur(4px)" }}
-																className="power-pulse-content"
+													{(showPowerPulse || showLowBatteryPulse) && !isHovered ? (
+														<motion.div
+															key="pulse-view"
+															initial={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
+															animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+															exit={{ opacity: 0, scale: 1.05, filter: "blur(4px)" }}
+															className="power-pulse-content"
+														>
+															<BatteryIcon
+																charging={isCharging}
+																level={batteryLevel}
+																threshold={lowBatteryThreshold}
+															/>
+															<span
+																className="label"
+																style={{ color: showLowBatteryPulse ? "#FF453A" : "inherit" }}
 															>
-																<GreenDownArrowIcon />
-																<span className="label" style={{ color: "#32D74B" }}>
-																	Update Available
-																</span>
-															</motion.div>
-														) : (
-															<motion.div
-																key="pulse-view"
-																initial={{ opacity: 0, scale: 0.95, filter: "blur(4px)" }}
-																animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-																exit={{ opacity: 0, scale: 1.05, filter: "blur(4px)" }}
-																className="power-pulse-content"
-															>
-																{updateAvailable && <GreenDownArrowIcon />}
-																<BatteryIcon
-																	charging={isCharging}
-																	level={batteryLevel}
-																	threshold={lowBatteryThreshold}
-																/>
-																<span
-																	className="label"
-																	style={{ color: showLowBatteryPulse ? "#FF453A" : "inherit" }}
-																>
-																	{showLowBatteryPulse
-																		? "Low Battery"
-																		: isCharging
-																			? "Charging"
-																			: "On Battery"}{" "}
-																	• {batteryLevel}%
-																</span>
-															</motion.div>
-														)
+																{showLowBatteryPulse
+																	? "Low Battery"
+																	: isCharging
+																		? "Charging"
+																		: "On Battery"}{" "}
+																• {batteryLevel}%
+															</span>
+														</motion.div>
 													) : (
 														<motion.div
 															key="standard-view"
@@ -2281,9 +2186,6 @@ function App() {
 																		)}
 																	</AnimatePresence>
 																</div>
-																{updateAvailable && showUpdateIndicator && (
-																	<div className="update-dot" />
-																)}
 															</div>
 
 															{/* Right: album art (music) or battery (command-center, calendar) */}

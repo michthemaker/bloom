@@ -5,10 +5,10 @@
 ✅ **The Known (ready to execute, no blockers):**
 
 - [ ] **#1 — Remove updater dot**
-  - [ ] `App.tsx` L2282–2286 — remove `.update-dot` div + conditional
-  - [ ] `App.tsx` L503–523 — remove state + `listen("update-available")` effect
-  - [ ] `App.tsx` L1729 — remove `showUpdatePulse` from pulse width logic
-  - [ ] `App.tsx` L2168–2183 — remove the update pulse animation view
+  - [x] `App.tsx` L2282–2286 — remove `.update-dot` div + conditional
+  - [x] `App.tsx` L503–523 — remove state + `listen("update-available")` effect
+  - [x] `App.tsx` L1729 — remove `showUpdatePulse` from pulse width logic
+  - [x] `App.tsx` L2168–2183 — remove the update pulse animation view
   - [ ] `GeneralTab.tsx` — remove toggle row + prop
   - [ ] `Settings.tsx` — remove prop pass-through
   - [ ] `useSettings.ts` — remove the toggle handler
