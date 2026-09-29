@@ -104,7 +104,6 @@ Example:
 | `bloom-scale`                 | float string         | `"1.0"`   | UI scale factor (0.8 to 1.3). Changing this re-registers AppBars to resize the reserved screen area. |
 | `bloom-low-battery-threshold` | integer string       | `"20"`    | Battery percentage that triggers the low-battery alert pulse (5 to 50, step 5).                      |
 | `bloom-auto-update`           | `"true"` / `"false"` | `"false"` | Check for and download updates automatically on startup.                                             |
-| `bloom-show-update-indicator` | `"true"` / `"false"` | `"true"`  | Show a green dot on the notch when an update is available.                                           |
 | `bloom-time-format-24h`       | `"true"` / `"false"` | `"false"` | Use 24-hour clock format in the notch. When `"false"`, displays 12-hour format with AM/PM.           |
 
 ### Internal (Do Not Edit Manually)
