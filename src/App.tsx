@@ -20,16 +20,7 @@ import { CompactMediaPlayer } from "./CompactMediaPlayer";
 import { useWeather } from "./hooks/useWeather";
 import { useSettingsSync } from "./hooks/useSettingsSync";
 import type { WidgetConfig } from "./components/StatusWidgetConfig";
-import {
-	Cpu,
-	MemoryStick,
-	HardDrive,
-	ArrowUpDown,
-	BellRing,
-	Play,
-	Pause,
-	RotateCcw
-} from "lucide-react";
+import { Cpu, MemoryStick, HardDrive, BellRing, Play, Pause, RotateCcw } from "lucide-react";
 import { inlineSwitch } from "./lib";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
@@ -452,8 +443,8 @@ function App() {
 	const [cpuUsage, setCpuUsage] = useState(0);
 	const [ramUsage, setRamUsage] = useState(0);
 	const [diskSpace, setDiskSpace] = useState(0);
-	const [netUpSpeed, setNetUpSpeed] = useState(0);
-	const [netDownSpeed, setNetDownSpeed] = useState(0);
+	// const [netUpSpeed, setNetUpSpeed] = useState(0);
+	// const [netDownSpeed, setNetDownSpeed] = useState(0);
 	const [statusWidgets, setStatusWidgets] = useState<WidgetConfig>({
 		left: ["weather"],
 		right: ["battery"]
@@ -1298,12 +1289,12 @@ function App() {
 			invoke<number>("get_disk_space")
 				.then(setDiskSpace)
 				.catch((e) => console.warn("Disk:", e));
-			invoke<[number, number]>("get_network_speed")
-				.then(([up, down]) => {
-					setNetUpSpeed(up);
-					setNetDownSpeed(down);
-				})
-				.catch(() => {});
+			// invoke<[number, number]>("get_network_speed")
+			// 	.then(([up, down]) => {
+			// 		setNetUpSpeed(up);
+			// 		setNetDownSpeed(down);
+			// 	})
+			// 	.catch(() => {});
 		};
 		fetchMetrics();
 		const interval = setInterval(fetchMetrics, 3000);
@@ -1619,10 +1610,11 @@ function App() {
 			case "net":
 				return (
 					<div className="passive-feature" key="net" title="Network Speed">
-						<ArrowUpDown size={12} strokeWidth={2} />
-						<span className="label">
+						{wifiEnabled && <HugeiconsIcon icon={Wifi01Icon} size={14} strokeWidth={1.9} />}
+						{bluetoothEnabled && <HugeiconsIcon icon={Bluetooth} size={14} strokeWidth={1.9} />}
+						{/*<span className="label">
 							↑{formatBytes(netUpSpeed)} ↓{formatBytes(netDownSpeed)}
-						</span>
+						</span>*/}
 					</div>
 				);
 			default:
@@ -1630,11 +1622,11 @@ function App() {
 		}
 	};
 
-	const formatBytes = (bytes: number) => {
-		if (bytes < 1024) return `${bytes}B`;
-		if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}K`;
-		return `${(bytes / (1024 * 1024)).toFixed(1)}M`;
-	};
+	// const formatBytes = (bytes: number) => {
+	// 	if (bytes < 1024) return `${bytes}B`;
+	// 	if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)}K`;
+	// 	return `${(bytes / (1024 * 1024)).toFixed(1)}M`;
+	// };
 
 	// Music mode shows any time we have media info (playing or paused) and music mode setting is enabled
 	const isMusicMode = mediaInfo.has_media && bloomMode === "music" && settingsMusicModeEnabled,
@@ -1710,7 +1702,7 @@ function App() {
 					ref={bloomRef}
 					className={`bloom ${isHovered ? "expanded" : ""} ${isImpacted ? "is-impacted" : ""}`}
 					onMouseEnter={() => setIsNotchHovered(true)}
-					onMouseLeave={() => setIsNotchHovered(false)}
+					// onMouseLeave={() => setIsNotchHovered(false)}
 					onWheel={handleWheel}
 					initial={{
 						y: 250,
@@ -1764,6 +1756,8 @@ function App() {
 					}}
 					onHoverEnd={() => {
 						// uncomment onMouseLeave and remove the return line
+
+						return;
 						setIsHovered(false);
 						const targetMode =
 							mediaInfo.has_media && isPlaying && settingsMusicCompactNotch ? "music" : "status";

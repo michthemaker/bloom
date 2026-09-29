@@ -31,9 +31,9 @@
   - [x] Create styles in `src/components/ContextMenu.css` — port from `Dock.css` `.context-menu`, `.menu-item`, `.submenu` etc.
   - [x] Wire up `set_menu_open` invoke on open/close so Bloom doesn't auto-hide while menu is open
 
-- [ ] **#11 — Completion of ui/command-center-layout-redesign branch**
-  - [ ] Command Center Context Menu applied in Notch and Dock Mode
-  - [ ] Wifi and Bluetooth Icon showing on status mode left side
+- [x] **#11 — Completion of ui/command-center-layout-redesign branch**
+  - [x] Notch and Dock mode pills in command center redesigned
+  - [x] Wifi and Bluetooth Icon showing on status mode left side
 
 🌫️ **The Fog (need answers before coding):**
 
