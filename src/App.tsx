@@ -20,22 +20,27 @@ import { CompactMediaPlayer } from "./CompactMediaPlayer";
 import { useWeather } from "./hooks/useWeather";
 import { useSettingsSync } from "./hooks/useSettingsSync";
 import type { WidgetConfig } from "./components/StatusWidgetConfig";
-import { Cpu, MemoryStick, HardDrive, BellRing, Play, Pause, RotateCcw } from "lucide-react";
 import { inlineSwitch } from "./lib";
 import { HugeiconsIcon } from "@hugeicons/react";
 import {
 	Archive02Icon,
 	BatteryPlusIcon,
+	BellRingIcon,
 	Bluetooth,
 	ChevronDownIcon,
 	ChevronUpIcon,
 	Moon01Icon,
 	Notification01Icon,
+	Pause,
+	Play,
 	Refresh01Icon,
 	Settings01Icon,
 	SunDimIcon,
 	Volume02Icon,
-	Wifi01Icon
+	Wifi01Icon,
+	CpuIcon,
+	HardDriveIcon,
+	RamMemoryIcon
 } from "@hugeicons/core-free-icons";
 
 // Pomodoro timer limit.
@@ -1569,7 +1574,7 @@ function App() {
 						key="weather"
 						title={cityName ? `${weatherCondition} — ${cityName}` : weatherCondition}
 					>
-						<WeatherIcon size={12} strokeWidth={2.2} />
+						<HugeiconsIcon icon={WeatherIcon} size={12} strokeWidth={2.2} />
 						<span className="label">
 							{temperature}°{tempUnit === "fahrenheit" ? "F" : "C"}
 						</span>
@@ -1589,21 +1594,21 @@ function App() {
 			case "cpu":
 				return (
 					<div className="passive-feature" key="cpu" title="CPU Usage">
-						<Cpu size={12} strokeWidth={2} />
+						<HugeiconsIcon icon={CpuIcon} size={12} strokeWidth={2} />
 						<span className="label">{cpuUsage}%</span>
 					</div>
 				);
 			case "ram":
 				return (
 					<div className="passive-feature" key="ram" title="RAM Usage">
-						<MemoryStick size={12} strokeWidth={2} />
+						<HugeiconsIcon icon={RamMemoryIcon} size={12} strokeWidth={2} />
 						<span className="label">{Math.round(ramUsage)}%</span>
 					</div>
 				);
 			case "disk":
 				return (
 					<div className="passive-feature" key="disk" title="Free Disk Space">
-						<HardDrive size={12} strokeWidth={2} />
+						<HugeiconsIcon icon={HardDriveIcon} size={12} strokeWidth={2} />
 						<span className="label">{diskSpace}GB</span>
 					</div>
 				);
@@ -2166,7 +2171,8 @@ function App() {
 																				transition={{ type: "spring", stiffness: 600, damping: 30 }}
 																			>
 																				{isTimerFinished && (
-																					<BellRing
+																					<HugeiconsIcon
+																						icon={BellRingIcon}
 																						size={13}
 																						strokeWidth={2.5}
 																						className="timer-bell"
@@ -2606,9 +2612,19 @@ function App() {
 															title={primaryTimerLabel}
 														>
 															{isTimerRunning ? (
-																<Pause size={14} strokeWidth={2} fill="currentColor" />
+																<HugeiconsIcon
+																	icon={Pause}
+																	size={14}
+																	strokeWidth={2}
+																	fill="currentColor"
+																/>
 															) : (
-																<Play size={14} strokeWidth={2} fill="currentColor" />
+																<HugeiconsIcon
+																	icon={Play}
+																	size={14}
+																	strokeWidth={2}
+																	fill="currentColor"
+																/>
 															)}
 															<span>{primaryTimerLabel}</span>
 														</button>
@@ -2618,7 +2634,7 @@ function App() {
 															disabled={timerSeconds === 0 && !isTimerFinished}
 															title="Reset"
 														>
-															<RotateCcw size={14} strokeWidth={2.5} />
+															<HugeiconsIcon icon={Refresh01Icon} size={14} strokeWidth={2.5} />
 														</button>
 													</div>
 

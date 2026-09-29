@@ -14,9 +14,9 @@
   - [x] `useSettings.ts` — remove the toggle handler
   - [x] `SETTINGS.md` — remove the key from documentation
 
-- [ ] **#5 — Lucide audit (replace progressively with HugeIcons)**
+- [x] **#5 — Lucide audit (replace progressively with HugeIcons)**
   - [ ] `App.tsx`: `Cpu, MemoryStick, HardDrive, ArrowUpDown, BellRing, Play, Pause, RotateCcw`
-  - [ ] `Dock.tsx`: `ChevronRightIcon, PinIcon`
+  - [x] `Dock.tsx`: `ChevronRightIcon, PinIcon`
   - [x] `Settings.tsx`: `X, Settings, Palette, PanelTop, Monitor, Layers, Info`
   - [x] `StatusWidgetConfig.tsx`
   - [x] `AboutTab.tsx`
@@ -35,12 +35,15 @@
   - [x] Notch and Dock mode pills in command center redesigned
   - [x] Wifi and Bluetooth Icon showing on status mode left side
 
+
 🌫️ **The Fog (need answers before coding):**
 
 - **#3 — Brightness slider:** The `set_brightness` Rust command pipes to `BRIGHTNESS_SENDER` → WMI worker. Does it fail silently (WMI permission / laptop-only panel issue), or does the UI slider not even call `invoke("set_brightness")`? *Is this a desktop or laptop monitor?*
 - **#3a — Fn keys:** Hook intercepts VK `0x216`/`0x217` — OEM codes that may not match your keyboard. Do the Fn brightness keys work normally without Bloom running?
 - **#4 — File shelf:** Do you want a temporary drag-drop holding area to park files and drop them into apps? Or something else?
 - **#9 — Live activities:** Camera/mic detection needs Windows privacy APIs. Which notch mode should it appear in — always-on tray-style, or peek/pulse like battery?
+- **#12 — Squirclized dock icons (haven't found how apple does it based on the colors in the icon**
+- **#13 — Listener for bluetooth and wifi to status and command center**
 
 🌑 **The Deep Dark (park for later):**
 

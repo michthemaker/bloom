@@ -1,4 +1,3 @@
-import { Power, Clock, BatteryWarning, RefreshCw, LogOut } from "lucide-react";
 import { SettingRow } from "./SettingRow";
 import {
 	BatteryLowIcon,
