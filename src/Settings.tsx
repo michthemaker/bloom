@@ -101,8 +101,6 @@ function SettingsApp() {
 							toggleAutostart={settings.toggleAutostart}
 							timeFormat24h={settings.timeFormat24h}
 							toggleTimeFormat24h={settings.toggleTimeFormat24h}
-							showUpdateIndicator={settings.showUpdateIndicator}
-							toggleUpdateIndicator={settings.toggleUpdateIndicator}
 							lowBatteryThreshold={settings.lowBatteryThreshold}
 							handleThresholdChange={settings.handleThresholdChange}
 							restartBloom={settings.restartBloom}

@@ -56,3 +56,12 @@ export function inlineSwitch<
 		pickedReturn = last(defaultCases)?.default;
 	return pickedReturn as Default extends { default: Return } ? Return : undefined;
 }
+
+export function capitalize<T extends string>(str: T) {
+	return str
+		.split(" ")
+		.map((s) => {
+			return s[0].toUpperCase() + s.slice(1);
+		})
+		.join(" ") as Capitalize<T>;
+}
