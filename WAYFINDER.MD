@@ -15,7 +15,7 @@
   - [x] `SETTINGS.md` — remove the key from documentation
 
 - [x] **#5 — Lucide audit (replace progressively with HugeIcons)**
-  - [ ] `App.tsx`: `Cpu, MemoryStick, HardDrive, ArrowUpDown, BellRing, Play, Pause, RotateCcw`
+  - [x] `App.tsx`: `Cpu, MemoryStick, HardDrive, ArrowUpDown, BellRing, Play, Pause, RotateCcw`
   - [x] `Dock.tsx`: `ChevronRightIcon, PinIcon`
   - [x] `Settings.tsx`: `X, Settings, Palette, PanelTop, Monitor, Layers, Info`
   - [x] `StatusWidgetConfig.tsx`
