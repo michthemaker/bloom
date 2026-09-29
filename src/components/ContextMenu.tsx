@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import "./ContextMenu.css";
+import { createPortal } from "react-dom";
 
 export interface ContextMenuAction {
 	label: string;
-	onClick?: () => void;
+	onClick?: (event: Pick<React.MouseEvent<HTMLDivElement>, "stopPropagation">) => void;
 	/** Red destructive highlight on hover */
 	variant?: "default" | "quit";
 	disabled?: boolean;
@@ -63,7 +64,7 @@ export function ContextMenu({ x, y, items, onClose, scale = 1 }: ContextMenuProp
 		};
 	}, [onClose]);
 
-	return (
+	return createPortal(
 		<div
 			ref={menuRef}
 			className="cm"
@@ -74,16 +75,17 @@ export function ContextMenu({ x, y, items, onClose, scale = 1 }: ContextMenuProp
 			{items.map((item, i) => (
 				<MenuEntry key={i} item={item} onClose={onClose} />
 			))}
-		</div>
+		</div>,
+		document.body
 	);
 }
 
 function MenuEntry({ item, onClose }: { item: ContextMenuAction; onClose: () => void }) {
 	const hasSubmenu = item.submenu && item.submenu.length > 0;
 
-	const handleClick = () => {
+	const handleClick: React.MouseEventHandler<HTMLDivElement> = (event) => {
 		if (item.disabled || hasSubmenu) return;
-		item.onClick?.();
+		item.onClick?.(event);
 		onClose();
 	};
 

@@ -36,6 +36,8 @@ import {
 	Archive02Icon,
 	BatteryPlusIcon,
 	Bluetooth,
+	ChevronDownIcon,
+	ChevronUpIcon,
 	Moon01Icon,
 	Notification01Icon,
 	Refresh01Icon,
@@ -1642,7 +1644,7 @@ function App() {
 	// Calculate width dynamically based on enabled features
 	const getDynamicWidth = () => {
 		if (isCalendarMode) return 480;
-		if (isCommandCenterMode && isHovered) return 480;
+		if (isCommandCenterMode && isHovered) return 520;
 		if (isStatusMode && isHovered) {
 			const totalWidgets = statusWidgets.left.length + statusWidgets.right.length;
 			return Math.min(200 + totalWidgets * 50, 380);
@@ -1696,7 +1698,14 @@ function App() {
 
 	return (
 		<div className="screen" style={{ overflow: "hidden" }}>
-			<div style={{ zoom: scale, width: "100%", display: "flex", justifyContent: "center" }}>
+			<div
+				style={{
+					zoom: scale,
+					width: "100%",
+					display: "flex",
+					justifyContent: "center"
+				}}
+			>
 				<motion.div
 					ref={bloomRef}
 					className={`bloom ${isHovered ? "expanded" : ""} ${isImpacted ? "is-impacted" : ""}`}
@@ -2297,58 +2306,6 @@ function App() {
 											exit={{ opacity: 0, filter: "blur(4px)", transition: { duration: 0.1 } }}
 											transition={{ type: "spring", stiffness: 400, damping: 30 }}
 										>
-											{/*
-
-												wifi circular, bluetooth circular, dark mode, battery saver circle,
-
-												vertical pill volume, vertical pill brightness
-												*/}
-
-											{/* Pills Grid */}
-											<div className="cc-pills-grid">
-												{/* Dock Mode Pill */}
-												<div
-													className={`cc-pill-tile ${dockMode === "fixed" ? "active" : ""}`}
-													onClick={toggleDockModeSetting}
-													title="Cycle dock mode: Fixed / Smart / Peek"
-												>
-													<div className="cc-pill-icon-wrapper">
-														<DockIcon />
-													</div>
-													<div className="cc-pill-info">
-														<span className="cc-pill-title">Dock Mode</span>
-														<span className="cc-pill-status">
-															{dockMode === "fixed"
-																? "Fixed"
-																: dockMode === "smart"
-																	? "Smart"
-																	: "Peek"}
-														</span>
-													</div>
-												</div>
-
-												{/* Notch Mode Pill */}
-												<div
-													className={`cc-pill-tile ${notchMode === "fixed" ? "active" : ""}`}
-													onClick={toggleNotchModeSetting}
-													title="Cycle notch mode: Fixed / Smart / Peek"
-												>
-													<div className="cc-pill-icon-wrapper">
-														<NotchIcon />
-													</div>
-													<div className="cc-pill-info">
-														<span className="cc-pill-title">Notch Mode</span>
-														<span className="cc-pill-status">
-															{notchMode === "fixed"
-																? "Fixed"
-																: notchMode === "smart"
-																	? "Smart"
-																	: "Peek"}
-														</span>
-													</div>
-												</div>
-											</div>
-
 											{/* Classic Sliders Area */}
 											<div className="cc-vertical-sliders-area">
 												{/* Volume Slider */}
@@ -2496,6 +2453,84 @@ function App() {
 												>
 													<HugeiconsIcon icon={Refresh01Icon} size={20} strokeWidth={1.7} />
 												</button>
+											</div>
+
+											{/* Pills Grid */}
+											<div className="cc-pill-rows">
+												{/* Dock Mode Pill */}
+												<div
+													className={`cc-pill-tile ${dockMode === "fixed" ? "active" : ""}`}
+													onClick={toggleDockModeSetting}
+													title="Cycle dock mode: Fixed / Smart / Peek"
+												>
+													<div className="cc-pill-info">
+														<span className="cc-pill-title">Dock Mode</span>
+														<span className="cc-pill-status">
+															{dockMode === "fixed"
+																? "Fixed"
+																: dockMode === "smart"
+																	? "Smart"
+																	: "Peek"}
+														</span>
+													</div>
+													<div className="cc-pill-chevrons">
+														<HugeiconsIcon
+															icon={ChevronUpIcon}
+															size={16}
+															strokeWidth={1.7}
+															color="black"
+															style={{
+																translate: "0px 3px"
+															}}
+														/>
+														<HugeiconsIcon
+															icon={ChevronDownIcon}
+															size={16}
+															strokeWidth={1.7}
+															color="black"
+															style={{
+																translate: "0px -3px"
+															}}
+														/>
+													</div>
+												</div>
+												{/* Notch Mode Pill */}
+												<div
+													className={`cc-pill-tile ${notchMode === "fixed" ? "active" : ""}`}
+													onClick={toggleNotchModeSetting}
+													title="Cycle notch mode: Fixed / Smart / Peek"
+												>
+													<div className="cc-pill-info">
+														<span className="cc-pill-title">Notch Mode</span>
+														<span className="cc-pill-status">
+															{notchMode === "fixed"
+																? "Fixed"
+																: notchMode === "smart"
+																	? "Smart"
+																	: "Peek"}
+														</span>
+													</div>
+													<div className="cc-pill-chevrons">
+														<HugeiconsIcon
+															icon={ChevronUpIcon}
+															size={16}
+															strokeWidth={1.7}
+															color="black"
+															style={{
+																translate: "0px 3px"
+															}}
+														/>
+														<HugeiconsIcon
+															icon={ChevronDownIcon}
+															size={16}
+															strokeWidth={1.7}
+															color="black"
+															style={{
+																translate: "0px -3px"
+															}}
+														/>
+													</div>
+												</div>
 											</div>
 										</motion.div>
 									)}
@@ -2667,45 +2702,6 @@ function Calendar() {
 				{days}
 			</div>
 		</div>
-	);
-}
-
-function DockIcon() {
-	return (
-		<svg
-			width="18"
-			height="18"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2.5"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<rect x="2" y="14" width="20" height="8" rx="2" />
-			<line x1="6" y1="18" x2="6.01" y2="18" strokeWidth="3.5" strokeLinecap="round" />
-			<line x1="10" y1="18" x2="10.01" y2="18" strokeWidth="3.5" strokeLinecap="round" />
-			<line x1="14" y1="18" x2="14.01" y2="18" strokeWidth="3.5" strokeLinecap="round" />
-			<line x1="18" y1="18" x2="18.01" y2="18" strokeWidth="3.5" strokeLinecap="round" />
-		</svg>
-	);
-}
-
-function NotchIcon() {
-	return (
-		<svg
-			width="18"
-			height="18"
-			viewBox="0 0 24 24"
-			fill="none"
-			stroke="currentColor"
-			strokeWidth="2.5"
-			strokeLinecap="round"
-			strokeLinejoin="round"
-		>
-			<path d="M4 3h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
-			<path d="M9 9v4a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2V9" />
-		</svg>
 	);
 }
 

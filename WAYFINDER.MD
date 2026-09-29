@@ -4,7 +4,7 @@
 
 ✅ **The Known (ready to execute, no blockers):**
 
-- [ ] **#1 — Remove updater dot**
+- [x] **#1 — Remove updater dot**
   - [x] `App.tsx` L2282–2286 — remove `.update-dot` div + conditional
   - [x] `App.tsx` L503–523 — remove state + `listen("update-available")` effect
   - [x] `App.tsx` L1729 — remove `showUpdatePulse` from pulse width logic
@@ -31,6 +31,10 @@
   - [x] Create styles in `src/components/ContextMenu.css` — port from `Dock.css` `.context-menu`, `.menu-item`, `.submenu` etc.
   - [x] Wire up `set_menu_open` invoke on open/close so Bloom doesn't auto-hide while menu is open
 
+- [ ] **#11 — Completion of ui/command-center-layout-redesign branch**
+  - [ ] Command Center Context Menu applied in Notch and Dock Mode
+  - [ ] Wifi and Bluetooth Icon showing on status mode left side
+
 🌫️ **The Fog (need answers before coding):**
 
 - **#3 — Brightness slider:** The `set_brightness` Rust command pipes to `BRIGHTNESS_SENDER` → WMI worker. Does it fail silently (WMI permission / laptop-only panel issue), or does the UI slider not even call `invoke("set_brightness")`? *Is this a desktop or laptop monitor?*
@@ -53,4 +57,5 @@
 1. **#1** — self-contained, zero risk, clean removal
 2. **#10** — reusable component, needed by other features
 3. **#5** — progressive, file by file
-4. **#3** — after fog is cleared
+4. **#11** — complete the ui/command-center-layout-redesign branch
+5. **#3** — after fog is cleared

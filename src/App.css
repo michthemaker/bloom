@@ -5,6 +5,7 @@ body {
 	background: transparent;
 	overflow: hidden;
 	font-family: "SF Pro Display", "Segoe UI";
+	user-select: none;
 }
 
 .draggable-element {
@@ -1356,98 +1357,6 @@ img {
 	overflow: hidden;
 }
 
-.command-center-content-minimal .cc-pills-grid {
-	display: none !important;
-}
-
-/* Pills Grid */
-.cc-pills-grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 10px;
-	width: 100%;
-	height: 78px;
-}
-
-.cc-pill-tile {
-	display: flex;
-	align-items: center;
-	gap: 8px;
-	padding: 10px 8px;
-	border-radius: 14px;
-	corner-shape: superellipse(1.85);
-	background: var(--bloom-group-bg, rgba(255, 255, 255, 0.04));
-	border: 1px solid var(--bloom-border, rgba(255, 255, 255, 0.02));
-	cursor: pointer;
-	transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-	user-select: none;
-	height: 34px;
-	box-sizing: border-box;
-}
-
-.cc-pill-tile:hover {
-	background: var(--bloom-border, rgba(255, 255, 255, 0.08));
-	transform: translateY(-0.5px);
-}
-
-.cc-pill-tile:active {
-	transform: scale(0.98);
-}
-
-.cc-pill-icon-wrapper {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 20px;
-	height: 20px;
-	border-radius: 50%;
-	background: var(--bloom-group-bg, rgba(255, 255, 255, 0.08));
-	color: var(--bloom-text, rgba(255, 255, 255, 0.9));
-	transition: all 0.15s ease;
-}
-
-.cc-pill-icon-wrapper svg {
-	width: 12px;
-	height: 12px;
-}
-
-.cc-pill-info {
-	display: flex;
-	flex-direction: column;
-	line-height: 1.15;
-}
-
-.cc-pill-title {
-	font-size: 9px;
-	font-weight: 600;
-	color: var(--bloom-text, rgba(255, 255, 255, 0.9));
-}
-
-.cc-pill-status {
-	font-size: 7.5px;
-	color: var(--bloom-text-muted, rgba(255, 255, 255, 0.4));
-	font-weight: 500;
-}
-
-/* Active Monochrome pill states */
-.cc-pill-tile.active {
-	background: var(--bloom-text, rgba(255, 255, 255, 0.95));
-	border-color: var(--bloom-text, rgba(255, 255, 255, 0.95));
-}
-
-.cc-pill-tile.active .cc-pill-title {
-	color: var(--bloom-bg-expanded, rgba(0, 0, 0, 0.9));
-}
-
-.cc-pill-tile.active .cc-pill-status {
-	color: var(--bloom-bg-expanded, rgba(0, 0, 0, 0.5));
-}
-
-.cc-pill-tile.active .cc-pill-icon-wrapper {
-	background: var(--bloom-group-bg, rgba(0, 0, 0, 0.08));
-	color: var(--bloom-bg-expanded, #000);
-}
-
 /* Circular Actions Column */
 .cc-circular-actions-column {
 	display: grid;
@@ -1468,7 +1377,7 @@ img {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	cursor: pointer;
+	cursor: initial;
 	transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1559,6 +1468,66 @@ img {
 
 .cc-classic-slider-icon.brightness-past-threshold {
 	color: darkorange;
+}
+
+/* Pills Rows */
+.cc-pill-rows {
+	display: grid;
+	grid-template-rows: 1fr 1fr;
+	gap: 12px;
+	height: 100%;
+	flex: 1;
+}
+
+.cc-pill-tile {
+	display: flex;
+	height: 100%;
+	align-items: center;
+	gap: 8px;
+	border-radius: 18px;
+	corner-shape: superellipse(1.85);
+	border: none;
+	background: var(--bloom-text, rgba(255, 255, 255, 0.95));
+	color: rgba(255, 255, 255, 0.9);
+	cursor: pointer;
+	padding-inline: 12px 8px;
+	transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+	user-select: none;
+	box-sizing: border-box;
+}
+
+.cc-pill-tile:hover {
+	background: rgba(255, 255, 255, 0.95);
+}
+
+.cc-pill-tile:active {
+	transform: scale(0.95) translateY(0);
+}
+
+.cc-pill-info {
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+	line-height: 1.15;
+}
+
+.cc-pill-title {
+	font-size: 12px;
+	font-weight: 600;
+	color: var(--bloom-bg-expanded, rgba(0, 0, 0, 0.9));
+}
+
+.cc-pill-status {
+	font-size: 9px;
+	color: var(--bloom-bg-expanded, rgba(0, 0, 0, 0.5));
+	font-weight: 500;
+}
+
+.cc-pill-chevrons {
+	height: fit;
+	display: flex;
+	flex-direction: column;
+	margin-left: auto;
 }
 
 /* Light Mode overrides for Notch App components */
