@@ -1,5 +1,5 @@
-import { Download, RefreshCw, FileDown, Upload } from "lucide-react";
 import { SettingRow } from "./SettingRow";
+import { DownloadIcon, FileDownIcon, FileUpIcon, Refresh03Icon } from "@hugeicons/core-free-icons";
 
 interface AboutTabProps {
 	appVersion: string;
@@ -74,7 +74,7 @@ export function AboutTab({
 
 			<div className="setting-group-label">Software Updates</div>
 			<div className="setting-group">
-				<SettingRow icon={Download} label="Auto Update" desc="Update automatically on startup">
+				<SettingRow icon={DownloadIcon} label="Auto Update" desc="Update automatically on startup">
 					<label className="toggle-switch">
 						<input type="checkbox" checked={autoUpdate} onChange={toggleAutoUpdate} />
 						<span className="slider"></span>
@@ -82,7 +82,7 @@ export function AboutTab({
 				</SettingRow>
 
 				<SettingRow
-					icon={RefreshCw}
+					icon={Refresh03Icon}
 					label={getUpdateLabel()}
 					desc={getUpdateDesc()}
 					action
@@ -94,14 +94,14 @@ export function AboutTab({
 			<div className="setting-group-label setting-group-label--spaced">Data</div>
 			<div className="setting-group">
 				<SettingRow
-					icon={FileDown}
+					icon={FileDownIcon}
 					label={getExportLabel()}
 					desc="Save settings to a file"
 					action
 					onClick={handleExportSettings}
 				/>
 				<SettingRow
-					icon={Upload}
+					icon={FileUpIcon}
 					label={getImportLabel()}
 					desc="Load settings from a file"
 					action

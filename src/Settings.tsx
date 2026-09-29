@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import { Effect } from "@tauri-apps/api/window";
 import { invoke } from "@tauri-apps/api/core";
-import { X, Settings, Palette, PanelTop, Monitor, Layers, Info } from "lucide-react";
 import {
 	useSettings,
 	GeneralTab,
@@ -16,16 +15,27 @@ import {
 import type { SettingsTab } from "./settings/index";
 import { initTheme } from "./theme";
 import "./Settings.css";
+import { IconSvgObject } from "@hugeicons/core-free-icons/types";
+import {
+	InfoIcon,
+	LayersIcon,
+	MonitorIcon,
+	PaletteIcon,
+	PanelTopIcon,
+	Settings01Icon,
+	XIcon
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 const appWindow = getCurrentWebviewWindow();
 
-const TABS: { id: SettingsTab; label: string; icon: typeof Settings }[] = [
-	{ id: "general", label: "General", icon: Settings },
-	{ id: "appearance", label: "Appearance", icon: Palette },
-	{ id: "notch", label: "Notch", icon: PanelTop },
-	{ id: "dock", label: "Dock", icon: Monitor },
-	{ id: "overlays", label: "Overlays", icon: Layers },
-	{ id: "about", label: "About", icon: Info }
+const TABS: { id: SettingsTab; label: string; icon: IconSvgObject }[] = [
+	{ id: "general", label: "General", icon: Settings01Icon },
+	{ id: "appearance", label: "Appearance", icon: PaletteIcon },
+	{ id: "notch", label: "Notch", icon: PanelTopIcon },
+	{ id: "dock", label: "Dock", icon: MonitorIcon },
+	{ id: "overlays", label: "Overlays", icon: LayersIcon },
+	{ id: "about", label: "About", icon: InfoIcon }
 ];
 
 function SettingsApp() {
@@ -74,7 +84,7 @@ function SettingsApp() {
 					Settings
 				</span>
 				<button className="close-btn" onClick={handleClose} title="Close Settings">
-					<X size={12} strokeWidth={1.5} className="close-btn-icon" />
+					<HugeiconsIcon icon={XIcon} size={12} strokeWidth={1.5} className="close-btn-icon" />
 				</button>
 			</div>
 
@@ -87,7 +97,7 @@ function SettingsApp() {
 							onClick={() => setActiveTab(id)}
 						>
 							<div className="sidebar-tab-icon">
-								<Icon size={14} strokeWidth={1.5} />
+								<HugeiconsIcon icon={Icon} size={14} strokeWidth={1.5} />
 							</div>
 							<span>{label}</span>
 						</button>

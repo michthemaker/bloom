@@ -1,18 +1,18 @@
-import { useState, useEffect, useRef, useCallback, type ComponentType } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
+import { IconSvgObject } from "@hugeicons/core-free-icons/types";
 import {
-	Sun,
-	Moon,
-	Cloud,
-	CloudRain,
-	CloudSnow,
-	CloudLightning,
-	CloudFog,
-	CloudDrizzle,
-	Thermometer,
-	type LucideProps
-} from "lucide-react";
+	CloudDrizzleIcon,
+	CloudFogIcon,
+	CloudIcon,
+	CloudLightningIcon,
+	CloudRainIcon,
+	CloudSnowIcon,
+	MoonIcon,
+	SunIcon,
+	ThermometerIcon
+} from "@hugeicons/core-free-icons";
 
 // WMO weather interpretation codes
 // https://open-meteo.com/en/docs#weathervariables
@@ -54,7 +54,7 @@ const REFRESH_INTERVAL_MS = 30 * 60 * 1000; // 30 minutes
 interface WeatherState {
 	temperature: number | null;
 	weatherCondition: string;
-	weatherIcon: ComponentType<LucideProps>;
+	weatherIcon: IconSvgObject;
 }
 
 interface ResolvedLocation {
@@ -63,30 +63,30 @@ interface ResolvedLocation {
 	city?: string;
 }
 
-function getWeatherIcon(condition: string, isDay = true): ComponentType<LucideProps> {
+function getWeatherIcon(condition: string, isDay = true): IconSvgObject {
 	switch (condition) {
 		case "Clear":
 		case "Mostly Clear":
-			return isDay ? Sun : Moon;
+			return isDay ? SunIcon : MoonIcon;
 		case "Partly Cloudy":
 		case "Overcast":
-			return Cloud;
+			return CloudIcon;
 		case "Foggy":
-			return CloudFog;
+			return CloudFogIcon;
 		case "Drizzle":
 		case "Freezing Drizzle":
-			return CloudDrizzle;
+			return CloudDrizzleIcon;
 		case "Rainy":
 		case "Rain Showers":
 		case "Freezing Rain":
-			return CloudRain;
+			return CloudRainIcon;
 		case "Snowy":
 		case "Snow Showers":
-			return CloudSnow;
+			return CloudSnowIcon;
 		case "Stormy":
-			return CloudLightning;
+			return CloudLightningIcon;
 		default:
-			return Thermometer;
+			return ThermometerIcon;
 	}
 }
 
@@ -196,7 +196,7 @@ export function useWeather(enabled: boolean) {
 	const [weatherCondition, setWeatherCondition] = useState<string>(
 		() => localStorage.getItem("bloom-weather-cached-condition") || ""
 	);
-	const [weatherIcon, setWeatherIcon] = useState<ComponentType<LucideProps>>(() => Thermometer);
+	const [weatherIcon, setWeatherIcon] = useState<IconSvgObject>(() => ThermometerIcon);
 	const [cityName, setCityName] = useState<string>(
 		() => localStorage.getItem("bloom-weather-city") || ""
 	);
@@ -235,7 +235,7 @@ export function useWeather(enabled: boolean) {
 					const mockTemp = tempUnitRef.current === "fahrenheit" ? 72 : 22;
 					setTemperature(mockTemp);
 					setWeatherCondition("Partly Cloudy");
-					setWeatherIcon(() => Cloud);
+					setWeatherIcon(() => CloudIcon);
 				}
 			}
 		},

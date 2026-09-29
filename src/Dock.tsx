@@ -5,7 +5,8 @@ import { listen } from "@tauri-apps/api/event";
 import "./Dock.css";
 import { initTheme } from "./theme";
 import { useSettingsSync } from "./hooks/useSettingsSync";
-import { ChevronRightIcon, PinIcon } from "lucide-react";
+import { ChevronRightIcon, PinIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 interface AppInfo {
 	name: string;
@@ -1245,7 +1246,7 @@ const Dock = memo(function Dock() {
 								onMouseLeave={() => setActiveSubmenu(null)}
 							>
 								Bloom Options
-								<ChevronRightIcon className="submenu-arrow" />
+								<HugeiconsIcon icon={ChevronRightIcon} className={"submenu-arrow"} />
 								<div className="submenu">
 									<div
 										className="menu-item"
@@ -1308,7 +1309,7 @@ const Dock = memo(function Dock() {
 								onMouseLeave={() => setActiveSubmenu(null)}
 							>
 								Bloom Options
-								<ChevronRightIcon className="submenu-arrow" />
+								<HugeiconsIcon icon={ChevronRightIcon} className={"submenu-arrow"} />
 								<div className="submenu">
 									<div
 										className="menu-item"
@@ -1571,7 +1572,7 @@ function AddAppPopup({
 										)}
 									</div>
 									<div className="popup-app-name">{app.name}</div>
-									<PinIcon className="popup-app-pin" />
+									<HugeiconsIcon icon={PinIcon} className={"popup-app-pin"} />
 								</div>
 							);
 						})

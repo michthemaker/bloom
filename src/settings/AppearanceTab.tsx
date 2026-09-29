@@ -1,5 +1,13 @@
-import { Palette, Droplet, Contrast, Droplets, Sun, Square, Maximize2 } from "lucide-react";
 import { SettingRow } from "./SettingRow";
+import {
+	ArrowExpand01Icon,
+	ContrastIcon,
+	DropletIcon,
+	DropletsIcon,
+	FullscreenIcon,
+	PaletteIcon,
+	SunDimIcon
+} from "@hugeicons/core-free-icons";
 
 interface AppearanceTabProps {
 	themeMode: string;
@@ -41,7 +49,7 @@ export function AppearanceTab({
 		<>
 			<div className="setting-group-label">Theme</div>
 			<div className="setting-group">
-				<SettingRow icon={Palette} label="Theme Mode" desc="Configure visual styling">
+				<SettingRow icon={PaletteIcon} label="Theme Mode" desc="Configure visual styling">
 					<select
 						className="settings-select"
 						value={themeMode}
@@ -56,7 +64,7 @@ export function AppearanceTab({
 
 				{showCustomColor && (
 					<SettingRow
-						icon={Droplet}
+						icon={DropletIcon}
 						label="Custom Theme Color"
 						desc="Choose layout background color"
 					>
@@ -73,7 +81,7 @@ export function AppearanceTab({
 				)}
 
 				<SettingRow
-					icon={Contrast}
+					icon={ContrastIcon}
 					label="Background Opacity"
 					desc={`Adjust theme transparency (${Math.round(themeOpacity * 100)}%)`}
 					divider={showAdvancedSliders}
@@ -92,7 +100,7 @@ export function AppearanceTab({
 				{showAdvancedSliders && (
 					<>
 						<SettingRow
-							icon={Droplets}
+							icon={DropletsIcon}
 							label="Color Saturation"
 							desc={`Adjust theme color vibrancy (${Math.round(themeSaturation * 100)}%)`}
 						>
@@ -108,7 +116,7 @@ export function AppearanceTab({
 						</SettingRow>
 
 						<SettingRow
-							icon={Sun}
+							icon={SunDimIcon}
 							label="Background Brightness"
 							desc={`Adjust background lightness (${Math.round(themeBrightness * 100)}%)`}
 							divider={false}
@@ -129,7 +137,7 @@ export function AppearanceTab({
 
 			<div className="setting-group-label">Display</div>
 			<div className="setting-group">
-				<SettingRow icon={Square} label="Screen Corners" desc="Rounded top edges">
+				<SettingRow icon={FullscreenIcon} label="Screen Corners" desc="Rounded top edges">
 					<label className="toggle-switch">
 						<input type="checkbox" checked={cornersEnabled} onChange={toggleCorners} />
 						<span className="slider"></span>
@@ -137,7 +145,7 @@ export function AppearanceTab({
 				</SettingRow>
 
 				<SettingRow
-					icon={Maximize2}
+					icon={ArrowExpand01Icon}
 					label="UI & Font Scale"
 					desc={`Adjust desktop size (${Math.round(scale * 100)}%)`}
 					divider={false}

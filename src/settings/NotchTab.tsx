@@ -1,18 +1,19 @@
-import {
-	PanelTop,
-	Calendar,
-	BellRing,
-	Music,
-	Minimize2,
-	LayoutList,
-	Sparkles,
-	Circle,
-	CloudSun,
-	X
-} from "lucide-react";
 import { SettingRow } from "./SettingRow";
 import { StatusWidgetConfig } from "../components/StatusWidgetConfig";
 import type { WidgetConfig } from "./types";
+import {
+	ArrowShrink02Icon,
+	BellRingIcon,
+	Calendar01Icon,
+	CircleIcon,
+	CloudSunRainIcon,
+	LayoutListIcon,
+	Music02Icon,
+	PanelTopIcon,
+	SparklesIcon,
+	XIcon
+} from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
 interface NotchTabProps {
 	notchMode: string;
@@ -86,7 +87,7 @@ export function NotchTab({
 		<>
 			<div className="setting-group-label">Notch</div>
 			<div className="setting-group">
-				<SettingRow icon={PanelTop} label="Notch Behavior" desc="Choose how the notch appears">
+				<SettingRow icon={PanelTopIcon} label="Notch Behavior" desc="Choose how the notch appears">
 					<select
 						className="settings-select"
 						value={notchMode}
@@ -98,7 +99,11 @@ export function NotchTab({
 					</select>
 				</SettingRow>
 
-				<SettingRow icon={Calendar} label="Calendar & Timer" desc="Enable productivity split-view">
+				<SettingRow
+					icon={Calendar01Icon}
+					label="Calendar & Timer"
+					desc="Enable productivity split-view"
+				>
 					<label className="toggle-switch">
 						<input type="checkbox" checked={calendarEnabled} onChange={toggleCalendar} />
 						<span className="slider"></span>
@@ -107,7 +112,7 @@ export function NotchTab({
 
 				{calendarEnabled && (
 					<SettingRow
-						icon={BellRing}
+						icon={BellRingIcon}
 						label="Timer Sound"
 						desc="Play a chime when the timer finishes"
 					>
@@ -118,7 +123,7 @@ export function NotchTab({
 					</SettingRow>
 				)}
 
-				<SettingRow icon={Music} label="Music Mode" desc="Interactive live music widget">
+				<SettingRow icon={Music02Icon} label="Music Mode" desc="Interactive live music widget">
 					<label className="toggle-switch">
 						<input type="checkbox" checked={musicModeEnabled} onChange={toggleMusicMode} />
 						<span className="slider"></span>
@@ -128,7 +133,7 @@ export function NotchTab({
 				{musicModeEnabled && (
 					<>
 						<SettingRow
-							icon={Minimize2}
+							icon={ArrowShrink02Icon}
 							label="Compact Mode"
 							desc="Show visualizer & artwork when collapsed"
 						>
@@ -142,7 +147,11 @@ export function NotchTab({
 							</label>
 						</SettingRow>
 
-						<SettingRow icon={LayoutList} label="Media Layout" desc="Choose expanded player style">
+						<SettingRow
+							icon={LayoutListIcon}
+							label="Media Layout"
+							desc="Choose expanded player style"
+						>
 							<div className="unit-toggle-minimal wide">
 								<span
 									className={mediaLayout === "classic" ? "active" : ""}
@@ -160,7 +169,7 @@ export function NotchTab({
 						</SettingRow>
 
 						<SettingRow
-							icon={Sparkles}
+							icon={SparklesIcon}
 							label="Ambient Glow"
 							desc="Colored glow behind expanded album art"
 						>
@@ -171,7 +180,7 @@ export function NotchTab({
 						</SettingRow>
 
 						<SettingRow
-							icon={Circle}
+							icon={CircleIcon}
 							label="Compact Glow"
 							desc="Glow around collapsed thumbnail"
 							divider={false}
@@ -192,7 +201,7 @@ export function NotchTab({
 			<div className="setting-group-label">Weather</div>
 			<div className="setting-group">
 				<SettingRow
-					icon={CloudSun}
+					icon={CloudSunRainIcon}
 					label="Weather Status"
 					desc={cityName || "Auto-detect location"}
 				>
@@ -237,7 +246,7 @@ export function NotchTab({
 									}}
 									title="Clear city"
 								>
-									<X size={10} strokeWidth={2.5} />
+									<HugeiconsIcon icon={XIcon} size={10} strokeWidth={2.5} />
 								</button>
 							)}
 						</div>

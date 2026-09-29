@@ -1,5 +1,11 @@
-import { Power, Clock, BatteryWarning, RefreshCw, LogOut } from "lucide-react";
 import { SettingRow } from "./SettingRow";
+import {
+	BatteryLowIcon,
+	Clock01Icon,
+	LogOutIcon,
+	PowerIcon,
+	Refresh01Icon
+} from "@hugeicons/core-free-icons";
 
 interface GeneralTabProps {
 	autostart: boolean;
@@ -26,14 +32,14 @@ export function GeneralTab({
 		<>
 			<div className="setting-group-label">System</div>
 			<div className="setting-group">
-				<SettingRow icon={Power} label="Launch at Login" desc="Open Bloom automatically">
+				<SettingRow icon={PowerIcon} label="Launch at Login" desc="Open Bloom automatically">
 					<label className="toggle-switch">
 						<input type="checkbox" checked={autostart} onChange={toggleAutostart} />
 						<span className="slider"></span>
 					</label>
 				</SettingRow>
 
-				<SettingRow icon={Clock} label="24-Hour Time" desc="Use 24-hour clock format">
+				<SettingRow icon={Clock01Icon} label="24-Hour Time" desc="Use 24-hour clock format">
 					<label className="toggle-switch">
 						<input type="checkbox" checked={timeFormat24h} onChange={toggleTimeFormat24h} />
 						<span className="slider"></span>
@@ -41,7 +47,7 @@ export function GeneralTab({
 				</SettingRow>
 
 				<SettingRow
-					icon={BatteryWarning}
+					icon={BatteryLowIcon}
 					label="Low Battery Alert"
 					desc={`Trigger at ${lowBatteryThreshold}%`}
 					divider={false}
@@ -61,14 +67,14 @@ export function GeneralTab({
 			<div className="setting-group-label">App</div>
 			<div className="setting-group">
 				<SettingRow
-					icon={RefreshCw}
+					icon={Refresh01Icon}
 					label="Restart Bloom"
 					desc="Reinitialize all components"
 					action
 					onClick={restartBloom}
 				/>
 				<SettingRow
-					icon={LogOut}
+					icon={LogOutIcon}
 					label="Quit Bloom"
 					desc="Exit application completely"
 					action
