@@ -1756,7 +1756,6 @@ function App() {
 					}}
 					onHoverEnd={() => {
 						// uncomment onMouseLeave and remove the return line
-
 						return;
 						setIsHovered(false);
 						const targetMode =

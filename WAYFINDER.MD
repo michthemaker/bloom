@@ -18,13 +18,13 @@
   - [ ] `App.tsx`: `Cpu, MemoryStick, HardDrive, ArrowUpDown, BellRing, Play, Pause, RotateCcw`
   - [ ] `Dock.tsx`: `ChevronRightIcon, PinIcon`
   - [ ] `Settings.tsx`: `X, Settings, Palette, PanelTop, Monitor, Layers, Info`
-  - [ ] `StatusWidgetConfig.tsx`
+  - [x] `StatusWidgetConfig.tsx`
   - [ ] `AboutTab.tsx`
-  - [ ] `AppearanceTab.tsx`
+  - [x] `AppearanceTab.tsx`
   - [ ] `DockTab.tsx`
-  - [ ] `GeneralTab.tsx`
-  - [ ] `NotchTab.tsx`
-  - [ ] `OverlaysTab.tsx`
+  - [x] `GeneralTab.tsx`
+  - [x] `NotchTab.tsx`
+  - [x] `OverlaysTab.tsx`
 
 - [x] **#10 — Reusable left-click context menu (Select component)**
   - [x] Create `src/components/ContextMenu.tsx` — port pattern from `Dock.tsx` L1164–1344

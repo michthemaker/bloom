@@ -18,19 +18,20 @@ import {
 	arrayMove
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { IconSvgObject } from "@hugeicons/core-free-icons/types";
 import {
-	CloudSun,
-	BatteryFull,
-	Cpu,
-	MemoryStick,
-	HardDrive,
-	ArrowUpDown,
-	X,
-	ArrowLeftRight,
-	ChevronUp,
-	ChevronDown
-} from "lucide-react";
-import type { ComponentType, SVGProps } from "react";
+	ArrowDataTransferHorizontalIcon,
+	ArrowDataTransferVerticalIcon,
+	BatteryCharging01Icon,
+	ChevronDownIcon,
+	ChevronUpIcon,
+	CloudSunRainIcon,
+	CpuIcon,
+	HardDriveIcon,
+	RamMemoryIcon,
+	XIcon
+} from "@hugeicons/core-free-icons";
 
 export interface WidgetConfig {
 	left: string[];
@@ -40,17 +41,17 @@ export interface WidgetConfig {
 interface WidgetDef {
 	id: string;
 	label: string;
-	icon: ComponentType<SVGProps<SVGSVGElement> & { size?: number; strokeWidth?: number }>;
+	icon: IconSvgObject;
 	color: string;
 }
 
 const WIDGET_DEFS: WidgetDef[] = [
-	{ id: "weather", label: "Weather", icon: CloudSun, color: "#60a5fa" },
-	{ id: "battery", label: "Battery", icon: BatteryFull, color: "#4ade80" },
-	{ id: "cpu", label: "CPU", icon: Cpu, color: "#f97316" },
-	{ id: "ram", label: "RAM", icon: MemoryStick, color: "#a78bfa" },
-	{ id: "disk", label: "Disk", icon: HardDrive, color: "#38bdf8" },
-	{ id: "net", label: "Net", icon: ArrowUpDown, color: "#2dd4bf" }
+	{ id: "weather", label: "Weather", icon: CloudSunRainIcon, color: "#60a5fa" },
+	{ id: "battery", label: "Battery", icon: BatteryCharging01Icon, color: "#4ade80" },
+	{ id: "cpu", label: "CPU", icon: CpuIcon, color: "#f97316" },
+	{ id: "ram", label: "RAM", icon: RamMemoryIcon, color: "#a78bfa" },
+	{ id: "disk", label: "Disk", icon: HardDriveIcon, color: "#38bdf8" },
+	{ id: "net", label: "Net", icon: ArrowDataTransferVerticalIcon, color: "#2dd4bf" }
 ];
 
 const DEFAULT_CONFIG: WidgetConfig = {
@@ -72,7 +73,7 @@ function PoolChip({ id }: { id: string }) {
 			{...listeners}
 			{...attributes}
 		>
-			<Icon size={12} strokeWidth={2} style={{ color: def.color }} />
+			<HugeiconsIcon icon={Icon} size={12} strokeWidth={2} color={def.color} />
 			<span>{def.label}</span>
 		</div>
 	);
@@ -115,29 +116,29 @@ function SortablePlacedChip({
 			className={`widget-pill widget-pill--placed ${isDragging ? "dragging" : ""}`}
 		>
 			<div {...attributes} {...listeners} className="widget-pill-drag-handle draggable-element">
-				<Icon size={12} strokeWidth={2} style={{ color: def.color }} />
+				<HugeiconsIcon icon={Icon} size={12} strokeWidth={2} color={def.color} />
 				<span>{def.label}</span>
 			</div>
 			<div className="widget-pill-btns">
 				{idx > 0 && (
 					<button className="widget-pill-btn" onClick={() => onMove(id, -1)}>
-						<ChevronUp size={9} />
+						<HugeiconsIcon icon={ChevronUpIcon} size={10} strokeWidth={2} />
 					</button>
 				)}
 				{idx < total - 1 && (
 					<button className="widget-pill-btn" onClick={() => onMove(id, 1)}>
-						<ChevronDown size={9} />
+						<HugeiconsIcon icon={ChevronDownIcon} size={10} strokeWidth={2} />
 					</button>
 				)}
 				<button className="widget-pill-btn" title="Swap side" onClick={() => onSwap(id)}>
-					<ArrowLeftRight size={9} />
+					<HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={10} strokeWidth={2} />
 				</button>
 				<button
 					className="widget-pill-btn widget-pill-btn--x"
 					title="Remove"
 					onClick={() => onRemove(id)}
 				>
-					<X size={10} />
+					<HugeiconsIcon icon={XIcon} size={10} strokeWidth={2} />
 				</button>
 			</div>
 		</div>
@@ -376,7 +377,12 @@ export function StatusWidgetConfig({ value, onChange }: StatusWidgetConfigProps)
 			<DragOverlay>
 				{activeDef ? (
 					<div className="widget-pill widget-pill--dragging">
-						<activeDef.icon size={12} strokeWidth={2} style={{ color: activeDef.color }} />
+						<HugeiconsIcon
+							icon={activeDef.icon}
+							size={12}
+							strokeWidth={2}
+							color={activeDef.color}
+						/>
 						<span>{activeDef.label}</span>
 					</div>
 				) : null}

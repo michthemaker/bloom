@@ -1,5 +1,10 @@
-import { Volume2, Sun, ArrowLeftToLine, ArrowRightToLine } from "lucide-react";
 import { SettingRow } from "./SettingRow";
+import {
+	ArrowLeft05FreeIcons,
+	ArrowRight05Icon,
+	SunDimIcon,
+	Volume02Icon
+} from "@hugeicons/core-free-icons";
 
 interface OverlaysTabProps {
 	volumeOverlayEnabled: boolean;
@@ -26,7 +31,7 @@ export function OverlaysTab({
 		<>
 			<div className="setting-group-label">Overlays</div>
 			<div className="setting-group">
-				<SettingRow icon={Volume2} label="Volume HUD" desc="Bloom volume overlay">
+				<SettingRow icon={Volume02Icon} label="Volume HUD" desc="Bloom volume overlay">
 					<label className="toggle-switch">
 						<input type="checkbox" checked={volumeOverlayEnabled} onChange={toggleVolumeOverlay} />
 						<span className="slider"></span>
@@ -35,7 +40,7 @@ export function OverlaysTab({
 
 				{volumeOverlayEnabled && (
 					<SettingRow
-						icon={ArrowLeftToLine}
+						icon={ArrowLeft05FreeIcons}
 						label="Show on Edge Hover"
 						desc="Slide in from left edge"
 					>
@@ -46,7 +51,7 @@ export function OverlaysTab({
 					</SettingRow>
 				)}
 
-				<SettingRow icon={Sun} label="Brightness HUD" desc="Bloom brightness overlay">
+				<SettingRow icon={SunDimIcon} label="Brightness HUD" desc="Bloom brightness overlay">
 					<label className="toggle-switch">
 						<input
 							type="checkbox"
@@ -59,7 +64,7 @@ export function OverlaysTab({
 
 				{brightnessOverlayEnabled && (
 					<SettingRow
-						icon={ArrowRightToLine}
+						icon={ArrowRight05Icon}
 						label="Show on Edge Hover"
 						desc="Slide in from right edge"
 						divider={false}
