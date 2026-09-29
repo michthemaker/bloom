@@ -17,11 +17,11 @@
 - [ ] **#5 — Lucide audit (replace progressively with HugeIcons)**
   - [ ] `App.tsx`: `Cpu, MemoryStick, HardDrive, ArrowUpDown, BellRing, Play, Pause, RotateCcw`
   - [ ] `Dock.tsx`: `ChevronRightIcon, PinIcon`
-  - [ ] `Settings.tsx`: `X, Settings, Palette, PanelTop, Monitor, Layers, Info`
+  - [x] `Settings.tsx`: `X, Settings, Palette, PanelTop, Monitor, Layers, Info`
   - [x] `StatusWidgetConfig.tsx`
-  - [ ] `AboutTab.tsx`
+  - [x] `AboutTab.tsx`
   - [x] `AppearanceTab.tsx`
-  - [ ] `DockTab.tsx`
+  - [x] `DockTab.tsx`
   - [x] `GeneralTab.tsx`
   - [x] `NotchTab.tsx`
   - [x] `OverlaysTab.tsx`

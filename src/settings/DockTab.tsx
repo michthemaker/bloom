@@ -1,5 +1,11 @@
-import { Monitor, Eye, EyeOff, Circle, Maximize2 } from "lucide-react";
 import { SettingRow } from "./SettingRow";
+import {
+	ArrowExpand01Icon,
+	CircleIcon,
+	EyeIcon,
+	EyeOffIcon,
+	MonitorIcon
+} from "@hugeicons/core-free-icons";
 
 interface DockTabProps {
 	dockEnabled: boolean;
@@ -30,7 +36,7 @@ export function DockTab({
 		<>
 			<div className="setting-group-label">Dock</div>
 			<div className="setting-group">
-				<SettingRow icon={Monitor} label="Bloom Dock" desc="Replace Windows taskbar">
+				<SettingRow icon={MonitorIcon} label="Bloom Dock" desc="Replace Windows taskbar">
 					<label className="toggle-switch">
 						<input type="checkbox" checked={dockEnabled} onChange={toggleDock} />
 						<span className="slider"></span>
@@ -40,7 +46,7 @@ export function DockTab({
 				{dockEnabled && (
 					<>
 						<SettingRow
-							icon={dockMode === "fixed" ? EyeOff : Eye}
+							icon={dockMode === "fixed" ? EyeOffIcon : EyeIcon}
 							label="Behavior"
 							desc="Choose how the dock appears"
 						>
@@ -55,7 +61,11 @@ export function DockTab({
 							</select>
 						</SettingRow>
 
-						<SettingRow icon={Eye} label="Show App Previews" desc="Show window thumbnails on hover">
+						<SettingRow
+							icon={EyeIcon}
+							label="Show App Previews"
+							desc="Show window thumbnails on hover"
+						>
 							<label className="toggle-switch">
 								<input type="checkbox" checked={dockPreviewEnabled} onChange={toggleDockPreview} />
 								<span className="slider"></span>
@@ -63,7 +73,7 @@ export function DockTab({
 						</SettingRow>
 
 						<SettingRow
-							icon={Circle}
+							icon={CircleIcon}
 							label="Icon Only"
 							desc="Remove icon background and padding"
 							divider={dockMode === "fixed"}
@@ -76,7 +86,7 @@ export function DockTab({
 
 						{dockMode === "fixed" && (
 							<SettingRow
-								icon={Maximize2}
+								icon={ArrowExpand01Icon}
 								label="Adaptive Mode"
 								desc="Stretch to full width when a window is maximized"
 								divider={false}
