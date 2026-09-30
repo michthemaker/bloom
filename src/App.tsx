@@ -1707,7 +1707,7 @@ function App() {
 					ref={bloomRef}
 					className={`bloom ${isHovered ? "expanded" : ""} ${isImpacted ? "is-impacted" : ""}`}
 					onMouseEnter={() => setIsNotchHovered(true)}
-					// onMouseLeave={() => setIsNotchHovered(false)}
+					onMouseLeave={() => setIsNotchHovered(false)}
 					onWheel={handleWheel}
 					initial={{
 						y: 250,
@@ -1760,8 +1760,6 @@ function App() {
 						setBloomMode(mediaInfo.has_media && isPlaying ? "music" : "status");
 					}}
 					onHoverEnd={() => {
-						// uncomment onMouseLeave and remove the return line
-						return;
 						setIsHovered(false);
 						const targetMode =
 							mediaInfo.has_media && isPlaying && settingsMusicCompactNotch ? "music" : "status";

@@ -4,6 +4,11 @@
 
 ✅ **The Known (ready to execute, no blockers):**
 
+- [ ] **#3 — Fix brightness slider (laptop)**
+  - [ ] `services.rs` — add `println!` tracing inside the WMI loop to confirm `ExecQuery` returns rows and `__RELPATH` is non-empty
+  - [ ] Fix `__RELPATH` VARIANT extraction or the `ExecMethod` call (WMI provider confirmed working via PowerShell)
+  - [ ] Verify slider works end-to-end after fix
+
 - [x] **#1 — Remove updater dot**
   - [x] `App.tsx` L2282–2286 — remove `.update-dot` div + conditional
   - [x] `App.tsx` L503–523 — remove state + `listen("update-available")` effect
@@ -38,7 +43,6 @@
 
 🌫️ **The Fog (need answers before coding):**
 
-- **#3 — Brightness slider:** The `set_brightness` Rust command pipes to `BRIGHTNESS_SENDER` → WMI worker. Does it fail silently (WMI permission / laptop-only panel issue), or does the UI slider not even call `invoke("set_brightness")`? *Is this a desktop or laptop monitor?*
 - **#3a — Fn keys:** Hook intercepts VK `0x216`/`0x217` — OEM codes that may not match your keyboard. Do the Fn brightness keys work normally without Bloom running?
 - **#4 — File shelf:** Do you want a temporary drag-drop holding area to park files and drop them into apps? Or something else?
 - **#9 — Live activities:** Camera/mic detection needs Windows privacy APIs. Which notch mode should it appear in — always-on tray-style, or peek/pulse like battery?

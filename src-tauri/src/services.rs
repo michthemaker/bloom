@@ -1539,7 +1539,9 @@ pub fn setup_brightness_worker() {
 	std::thread::spawn(move || unsafe {
 		// Direct WMI COM + DXVA2 implementation (zero child processes spawned).
 		use windows::Win32::System::Com::{
-			CoCreateInstance, CoInitializeEx, CoUninitialize, CLSCTX_ALL, COINIT_MULTITHREADED,
+			CoCreateInstance, CoInitializeEx, CoSetProxyBlanket, CoUninitialize, CLSCTX_ALL,
+			COINIT_MULTITHREADED, EOLE_AUTHENTICATION_CAPABILITIES, RPC_C_AUTHN_LEVEL,
+			RPC_C_IMP_LEVEL,
 		};
 		use windows::Win32::System::Variant::{VariantClear, VARENUM, VARIANT};
 		use windows::Win32::System::Wmi::{
@@ -1573,15 +1575,35 @@ pub fn setup_brightness_worker() {
 			}
 		};
 
+		// Required after ConnectServer — without this, ExecQuery is rejected by the proxy.
+		// Constants: RPC_C_AUTHN_WINNT=10, RPC_C_AUTHZ_NONE=0, AUTHN_LEVEL_CALL=3, IMP_LEVEL_IMPERSONATE=3, EOAC_NONE=0
+		if CoSetProxyBlanket(
+			&services,
+			10u32,
+			0u32,
+			None,
+			RPC_C_AUTHN_LEVEL(3),
+			RPC_C_IMP_LEVEL(3),
+			None,
+			EOLE_AUTHENTICATION_CAPABILITIES(0),
+		)
+		.is_err()
+		{
+			let _ = CoUninitialize();
+			return;
+		}
+
 		while let Ok(brightness) = rx.recv() {
 			let brightness = brightness.min(100);
 			// 1. Laptop internal panel via WMI WmiMonitorBrightnessMethods
 			let wql = windows::core::BSTR::from("WQL");
 			let q = windows::core::BSTR::from("SELECT * FROM WmiMonitorBrightnessMethods");
 			if let Ok(enum_obj) = services.ExecQuery(&wql, &q, WBEM_GENERIC_FLAG_TYPE(0), None) {
+				println!("Enumeration object here {:?}", enum_obj);
 				let mut row = [None::<IWbemClassObject>; 1];
 				let mut returned = 0u32;
 				while enum_obj.Next(-1i32, &mut row, &mut returned).is_ok() && returned > 0 {
+					println!("Rows here {:?}", row);
 					if let Some(obj) = row[0].take() {
 						let mut var = VARIANT::default();
 						if obj
