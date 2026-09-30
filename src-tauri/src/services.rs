@@ -1540,8 +1540,7 @@ pub fn setup_brightness_worker() {
 		// Direct WMI COM + DXVA2 implementation (zero child processes spawned).
 		use windows::Win32::System::Com::{
 			CoCreateInstance, CoInitializeEx, CoSetProxyBlanket, CoUninitialize, CLSCTX_ALL,
-			COINIT_MULTITHREADED, EOLE_AUTHENTICATION_CAPABILITIES, RPC_C_AUTHN_LEVEL,
-			RPC_C_IMP_LEVEL,
+			COINIT_MULTITHREADED, EOLE_AUTHENTICATION_CAPABILITIES, RPC_C_AUTHN_LEVEL, RPC_C_IMP_LEVEL,
 		};
 		use windows::Win32::System::Variant::{VariantClear, VARENUM, VARIANT};
 		use windows::Win32::System::Wmi::{
@@ -1599,56 +1598,72 @@ pub fn setup_brightness_worker() {
 			let wql = windows::core::BSTR::from("WQL");
 			let q = windows::core::BSTR::from("SELECT * FROM WmiMonitorBrightnessMethods");
 			if let Ok(enum_obj) = services.ExecQuery(&wql, &q, WBEM_GENERIC_FLAG_TYPE(0), None) {
-				println!("Enumeration object here {:?}", enum_obj);
 				let mut row = [None::<IWbemClassObject>; 1];
 				let mut returned = 0u32;
 				while enum_obj.Next(-1i32, &mut row, &mut returned).is_ok() && returned > 0 {
-					println!("Rows here {:?}", row);
 					if let Some(obj) = row[0].take() {
+						println!("object is here {:?}", obj);
 						let mut var = VARIANT::default();
 						if obj
 							.Get(windows::core::w!("__RELPATH"), 0i32, &mut var, None, None)
 							.is_ok()
 						{
+							println!("Variant is {:?}", var);
 							let relpath_str = var.Anonymous.Anonymous.Anonymous.bstrVal.to_string();
 							let _ = VariantClear(&mut var);
+							println!("Relpath {:?}", relpath_str);
 							if !relpath_str.is_empty() {
 								let obj_path = windows::core::BSTR::from(relpath_str.as_str());
 								let method_name = windows::core::BSTR::from("WmiSetBrightness");
-
 								let mut in_cls: Option<IWbemClassObject> = None;
-								if obj
-									.GetMethod(
-										windows::core::w!("WmiSetBrightness"),
-										0i32,
-										&mut in_cls,
-										std::ptr::null_mut(),
-									)
-									.is_ok()
+								let mut ppobject: Option<IWbemClassObject> = None;
 								{
-									if let Some(in_cls) = in_cls {
-										if let Ok(in_params) = in_cls.SpawnInstance(0i32) {
-											let mut b_var = VARIANT::default();
-											let b_anon = &mut b_var.Anonymous.Anonymous;
-											b_anon.vt = VARENUM(17); // VT_UI1
-											b_anon.Anonymous.bVal = brightness as u8;
-											let _ = in_params.Put(windows::core::w!("Brightness"), 0i32, &b_var, 0);
+									services
+										.GetObject(
+											&windows::core::BSTR::from("WmiMonitorBrightnessMethods"),
+											WBEM_GENERIC_FLAG_TYPE(0),
+											None,
+											Some(&mut ppobject),
+											None,
+										)
+										.expect("Didnt get");
+								}
+								if let Some(ppobject) = ppobject {
+									if ppobject
+										.GetMethod(
+											windows::core::w!("WmiSetBrightness"),
+											0i32,
+											&mut in_cls,
+											std::ptr::null_mut(),
+										)
+										.is_ok()
+									{
+										println!("Instance class {:?}", in_cls);
+										if let Some(in_cls) = in_cls {
+											if let Ok(in_params) = in_cls.SpawnInstance(0i32) {
+												println!("Instance class params {:?}", in_params);
+												let mut b_var = VARIANT::default();
+												let b_anon = &mut b_var.Anonymous.Anonymous;
+												b_anon.vt = VARENUM(17); // VT_UI1
+												b_anon.Anonymous.bVal = brightness as u8;
+												let _ = in_params.Put(windows::core::w!("Brightness"), 0i32, &b_var, 0);
 
-											let mut t_var = VARIANT::default();
-											let t_anon = &mut t_var.Anonymous.Anonymous;
-											t_anon.vt = VARENUM(3); // VT_I4
-											t_anon.Anonymous.lVal = 0i32;
-											let _ = in_params.Put(windows::core::w!("Timeout"), 0i32, &t_var, 0);
+												let mut t_var = VARIANT::default();
+												let t_anon = &mut t_var.Anonymous.Anonymous;
+												t_anon.vt = VARENUM(3); // VT_I4
+												t_anon.Anonymous.lVal = 0i32;
+												let _ = in_params.Put(windows::core::w!("Timeout"), 0i32, &t_var, 0);
 
-											let _ = services.ExecMethod(
-												&obj_path,
-												&method_name,
-												WBEM_GENERIC_FLAG_TYPE(0),
-												None,
-												Some(&in_params),
-												None,
-												None,
-											);
+												let _ = services.ExecMethod(
+													&obj_path,
+													&method_name,
+													WBEM_GENERIC_FLAG_TYPE(0),
+													None,
+													Some(&in_params),
+													None,
+													None,
+												);
+											}
 										}
 									}
 								}
