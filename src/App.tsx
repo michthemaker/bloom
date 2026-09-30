@@ -2341,6 +2341,11 @@ function App() {
 															step="1"
 															value={currentBrightness}
 															onChange={(e) => handleBrightnessChange(parseInt(e.target.value))}
+															onPointerUp={(e) =>
+																invoke("set_brightness", {
+																	brightness: parseInt((e.target as HTMLInputElement).value)
+																}).catch(() => {})
+															}
 															onPointerDown={(e) => e.stopPropagation()}
 															onClick={(e) => e.stopPropagation()}
 															className="draggable-element cc-classic-input"

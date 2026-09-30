@@ -1602,16 +1602,13 @@ pub fn setup_brightness_worker() {
 				let mut returned = 0u32;
 				while enum_obj.Next(-1i32, &mut row, &mut returned).is_ok() && returned > 0 {
 					if let Some(obj) = row[0].take() {
-						println!("object is here {:?}", obj);
 						let mut var = VARIANT::default();
 						if obj
 							.Get(windows::core::w!("__RELPATH"), 0i32, &mut var, None, None)
 							.is_ok()
 						{
-							println!("Variant is {:?}", var);
 							let relpath_str = var.Anonymous.Anonymous.Anonymous.bstrVal.to_string();
 							let _ = VariantClear(&mut var);
-							println!("Relpath {:?}", relpath_str);
 							if !relpath_str.is_empty() {
 								let obj_path = windows::core::BSTR::from(relpath_str.as_str());
 								let method_name = windows::core::BSTR::from("WmiSetBrightness");
@@ -1638,10 +1635,8 @@ pub fn setup_brightness_worker() {
 										)
 										.is_ok()
 									{
-										println!("Instance class {:?}", in_cls);
 										if let Some(in_cls) = in_cls {
 											if let Ok(in_params) = in_cls.SpawnInstance(0i32) {
-												println!("Instance class params {:?}", in_params);
 												let mut b_var = VARIANT::default();
 												let b_anon = &mut b_var.Anonymous.Anonymous;
 												b_anon.vt = VARENUM(17); // VT_UI1
