@@ -1119,7 +1119,7 @@ pub fn setup_system_worker(app_handle: AppHandle) -> Sender<SystemCommand> {
 		CURRENT_BRIGHTNESS.store(last_brightness, Ordering::Relaxed);
 		loop {
 			if get_now_ms() - LAST_BRIGHTNESS_CHANGE.load(Ordering::Relaxed) < 2000 {
-				std::thread::sleep(std::time::Duration::from_millis(500));
+				std::thread::sleep(std::time::Duration::from_millis(150));
 				continue;
 			}
 			if let Ok(results) = wmi_con.query::<WmiMonitorBrightness>() {
@@ -1133,7 +1133,7 @@ pub fn setup_system_worker(app_handle: AppHandle) -> Sender<SystemCommand> {
 					}
 				}
 			}
-			std::thread::sleep(std::time::Duration::from_millis(1500));
+			std::thread::sleep(std::time::Duration::from_millis(150));
 		}
 	});
 

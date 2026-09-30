@@ -4,14 +4,14 @@
 
 ✅ **The Known (ready to execute, no blockers):**
 
-- [ ] **#3 — Fix brightness slider (laptop)**
+- [x] **#3 — Fix brightness slider (laptop)**
   - [x] **Step 1 — `CoSetProxyBlanket`:** `ExecQuery` was silently rejected because COM requires `CoSetProxyBlanket()` to be called on the `IWbemServices` proxy after `ConnectServer`. PowerShell handles this automatically; raw COM does not. Added call with `RPC_C_AUTHN_WINNT`, `RPC_C_IMP_LEVEL_IMPERSONATE` before the recv loop.
   - [x] **Step 2 — `GetObject` on class, not instance:** `GetMethod("WmiSetBrightness")` was called on the WMI **instance** object returned by `ExecQuery`. `GetMethod` only works on a **class definition**. Fixed by calling `services.GetObject("WmiMonitorBrightnessMethods")` separately to get the class def, then calling `GetMethod` on that — using the instance's `__RELPATH` only for the final `ExecMethod` target path.
   - [x] **Step 3 — WMI pipeline confirmed working.** Two remaining UX issues identified (no code yet):
     - `handleBrightnessChange` throttle drops the final pointer value — slider shows 100% but last `invoke` never fires. Fix: always flush on `pointerup` regardless of throttle.
     - WMI read-back poll interval is 500ms — HUD lags when brightness is changed externally (Windows quick settings). Fix: tighten poll to ~150ms.
   - [x] Fix throttle flush on `pointerup` in `App.tsx`
-  - [ ] Tighten WMI poll interval in `setup_system_worker` (`services.rs`)
+  - [x] Tighten WMI poll interval in `setup_system_worker` (`services.rs`)
 
 - [x] **#1 — Remove updater dot**
   - [x] `App.tsx` L2282–2286 — remove `.update-dot` div + conditional
