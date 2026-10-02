@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import { motion, AnimatePresence, useAnimation } from "framer-motion";
+import { motion, AnimatePresence, useAnimation } from "motion/react";
 import { invoke } from "@tauri-apps/api/core";
 import { Visualizer } from "./App";
 import {

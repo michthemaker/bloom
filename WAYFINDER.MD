@@ -44,6 +44,17 @@
   - [x] Notch and Dock mode pills in command center redesigned
   - [x] Wifi and Bluetooth Icon showing on status mode left side
 
+- [x] **#8 - Dependency updates (`framer-motion` → `motion` rename, low risk)**
+  - [x] Update code to import from motion/react
+
+- [ ] **#7 - StyleX migration (StyleX = atomic CSS at build time; Framer Motion = runtime inline styles — they coexist but
+ StyleX won't cover Motion's styles. Needs a spike.)**
+  - [ ] Migrate the src/components directory
+  - [ ] Migrate the src/icons directory
+  - [ ] Migrate the src/settings directory
+  - [ ] Migrate the src/*.tsx
+ 
+
 
 🌫️ **The Fog (need answers before coding):**
 
@@ -59,9 +70,6 @@
 
 - **#2** Settings redesign
 - **#6** Code refactor + consistent file naming
-- **#7** StyleX migration (StyleX = atomic CSS at build time; Framer Motion = runtime inline styles — they coexist but
- StyleX won't cover Motion's styles. Needs a spike.)
-- **#8** Dependency updates (`framer-motion` → `motion` rename, low risk)
 - **#9** Full live activities implementation
 - **#14** Overlay redesign to be like Iphone slider & dock redesign to look like macos 2017
 
