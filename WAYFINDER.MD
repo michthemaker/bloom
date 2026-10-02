@@ -47,7 +47,9 @@
 
 🌫️ **The Fog (need answers before coding):**
 
-- **#3a — Fn keys:** Hook intercepts VK `0x216`/`0x217` — OEM codes that may not match your keyboard. Do the Fn brightness keys work normally without Bloom running?
+- **#3a — Fn key OSD suppression:** Two separate root causes diagnosed:
+  - **Volume OSD when Bloom focused:** `WH_KEYBOARD_LL` swallows `WM_KEYDOWN` but Windows also sends `WM_APPCOMMAND` to the foreground window. When Bloom/WebView2 is focused, Chromium processes `WM_APPCOMMAND` natively → changes volume → OSD appears. Fix: intercept and swallow `WM_APPCOMMAND` in Tauri’s WndProc.
+  - **Brightness OSD always shows:** OSD is triggered by ACPI/firmware layer independently of the Win32 key event. `hide_osd()` already runs after brightness commands but it fires once synchronously — before the ACPI OSD (`NativeHWNDHost`) has even been created. Fix: extract `hide_osd` as a module-level `unsafe fn`, add `hide_osd_with_retry()` that spawns a short thread retrying ~8x every 30ms (~240ms window) to catch the OSD whenever it appears. Use `hide_osd_with_retry()` for `BrightnessUp`/`BrightnessDown`, keep single `hide_osd()` for volume (already timed correctly there).
 - **#4 — File shelf:** Do you want a temporary drag-drop holding area to park files and drop them into apps? Or something else?
 - **#9 — Live activities:** Camera/mic detection needs Windows privacy APIs. Which notch mode should it appear in — always-on tray-style, or peek/pulse like battery?
 - **#12 — Squirclized dock icons (haven't found how apple does it based on the colors in the icon**
@@ -61,6 +63,7 @@
  StyleX won't cover Motion's styles. Needs a spike.)
 - **#8** Dependency updates (`framer-motion` → `motion` rename, low risk)
 - **#9** Full live activities implementation
+- **#14** Overlay redesign to be like Iphone slider & dock redesign to look like macos 2017
 
 ---
 

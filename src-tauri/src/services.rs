@@ -741,6 +741,44 @@ pub fn setup_audio_visualization(app_handle: AppHandle) {
 	});
 }
 
+// unsafe fn hide_osd() {
+// 	use windows::Win32::UI::WindowsAndMessaging::{FindWindowA, ShowWindow, SW_HIDE};
+// 	let class = windows::core::PCSTR(c"NativeHWNDHost".as_ptr() as *const u8);
+// 	if let Ok(hwnd) = FindWindowA(class, windows::core::PCSTR::null()) {
+// 		let _ = ShowWindow(hwnd, SW_HIDE);
+// 	}
+// }
+//
+
+unsafe fn hide_osd() {
+	use windows::Win32::UI::WindowsAndMessaging::{FindWindowA, ShowWindow, SW_HIDE};
+
+	// Modern Windows 11 Volume/Brightness overlay frame container
+	let modern_class = windows::core::PCSTR(c"StandardFlexHubWindow".as_ptr() as *const u8);
+	match FindWindowA(modern_class, windows::core::PCSTR::null()) {
+		Ok(hwnd) => {
+			let _ = ShowWindow(hwnd, SW_HIDE);
+		}
+	}
+
+	// Windows 10/Early 11 Legacy Audio OSD Fallback
+	let legacy_class = windows::core::PCSTR(c"NativeHWNDHost".as_ptr() as *const u8);
+	match FindWindowA(legacy_class, windows::core::PCSTR::null()) {
+		Ok(hwnd) => {
+			let _ = ShowWindow(hwnd, SW_HIDE);
+		}
+	}
+}
+
+fn hide_osd_with_retry() {
+	std::thread::spawn(|| {
+		for _ in 0..8 {
+			std::thread::sleep(std::time::Duration::from_millis(30));
+			unsafe { hide_osd() };
+		}
+	});
+}
+
 pub fn setup_system_worker(app_handle: AppHandle) -> Sender<SystemCommand> {
 	let (tx, rx) = channel::<SystemCommand>();
 	let handle_system = app_handle.clone();
@@ -791,14 +829,6 @@ pub fn setup_system_worker(app_handle: AppHandle) -> Sender<SystemCommand> {
 			let mut last_emitted_info: Option<(String, String, bool, bool, Option<String>, i64, i64)> = None;
 			let mut last_volume: f32 = -1.0;
 			let mut last_muted: bool = false;
-
-			let hide_osd = || {
-				use windows::Win32::UI::WindowsAndMessaging::{FindWindowA, ShowWindow, SW_HIDE};
-				let class1 = windows::core::PCSTR(c"NativeHWNDHost".as_ptr() as *const u8);
-				if let Ok(hwnd1) = FindWindowA(class1, windows::core::PCSTR::null()) {
-					let _ = ShowWindow(hwnd1, SW_HIDE);
-				}
-			};
 
 			loop {
 				// Check for device change
@@ -859,7 +889,7 @@ pub fn setup_system_worker(app_handle: AppHandle) -> Sender<SystemCommand> {
 								if volume > 0.0 {
 									let _ = aev.SetMute(false, std::ptr::null());
 								}
-								hide_osd();
+								hide_osd()
 							}
 							SystemCommand::MediaPlayPause => {
 								if let Some(ref mgr) = manager {
@@ -913,7 +943,7 @@ pub fn setup_system_worker(app_handle: AppHandle) -> Sender<SystemCommand> {
 								if let Some(tx) = BRIGHTNESS_SENDER.get() {
 									let _ = tx.send(new_val);
 								}
-								hide_osd();
+								hide_osd_with_retry();
 							}
 							SystemCommand::BrightnessDown => {
 								let current = CURRENT_BRIGHTNESS.load(Ordering::Relaxed);
@@ -929,7 +959,7 @@ pub fn setup_system_worker(app_handle: AppHandle) -> Sender<SystemCommand> {
 								if let Some(tx) = BRIGHTNESS_SENDER.get() {
 									let _ = tx.send(new_val);
 								}
-								hide_osd();
+								hide_osd_with_retry();
 							}
 						}
 					}
