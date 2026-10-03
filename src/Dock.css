@@ -203,17 +203,30 @@ body {
 }
 
 .dock {
+	/* height is hardcoded in Dock.tsx */
 	display: flex;
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	gap: 12px;
-	padding: 8px 12px;
+	gap: 20px;
+	padding-inline: 14px;
 	corner-shape: superellipse(1.85);
-	background: var(--bloom-bg, rgba(0, 0, 0, 0.8));
-	border: none;
+	/*background: rgba(0, 0, 0, 0.7);
+	border: none;*/
+	/* my dock */
+	background:
+		linear-gradient(180deg, rgba(209, 213, 219, 0.28) 0%, rgba(0, 0, 0, 0.1) 100%),
+		rgba(60, 70, 90, 0.8);
+	box-shadow:
+		inset 0 1px 0 rgba(255, 255, 255, 0.35),
+		/* top highlight */ 0 10px 30px rgba(0, 0, 0, 0.25);
+	border: 0.5px solid rgba(255, 255, 255, 0.25);
+	/* end of my dock */
+
 	color: var(--bloom-text, white);
 	position: relative;
+	margin-top: 4px;
+	margin-bottom: 4px;
 	transform-origin: bottom center;
 	pointer-events: auto;
 	transition: padding 0.3s cubic-bezier(0.32, 0.72, 0, 1);
@@ -229,7 +242,7 @@ body {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	gap: 12px;
+	gap: 20px;
 	overflow: visible;
 }
 
@@ -240,7 +253,7 @@ body {
 	gap: 12px;
 }
 
-.dock::before,
+/*.dock::before,
 .dock::after {
 	content: "";
 	position: absolute;
@@ -268,7 +281,7 @@ body {
 	right: -12px;
 	border-top-right-radius: 12px;
 	corner-top-right-shape: scoop;
-}
+}*/
 
 .dock-icon-container {
 	cursor: initial;
@@ -283,8 +296,8 @@ body {
 }
 
 .dock-icon {
-	width: 36px;
-	height: 36px;
+	width: 32px;
+	height: 32px;
 	display: flex;
 	justify-content: center;
 	align-items: center;

@@ -11,7 +11,7 @@ export const bloom_tokens = stylex.defineConsts({
 	bloom_accent: "--bloom-accent"
 } as const);
 
-export const cursor_tokens = stylex.defineVars({
-	grab: stylex.types.url('url("/cursors/grab.svg"), grab'),
-	grabbing: stylex.types.url('url("/cursors/grabbing.svg"), grabbing')
+export const cursor_tokens = stylex.defineConsts({
+	grab: 'url("/cursors/grab.svg"), grab',
+	grabbing: 'url("/cursors/grabbing.svg"), grabbing'
 });

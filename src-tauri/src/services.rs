@@ -2610,8 +2610,8 @@ fn register_dock_appbar_inner(window: tauri::WebviewWindow, attempt: i32) {
 			}
 			return;
 		}
-
-		let pr = ((56.0 * bloom_scale) * scale) as i32;
+		// this is the height of the dock
+		let pr = ((60.0 * bloom_scale) * scale) as i32;
 
 		unsafe {
 			use windows::Win32::Foundation::RECT;

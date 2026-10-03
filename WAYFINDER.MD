@@ -11,6 +11,10 @@
   - [ ] Migrate the src/settings directory
   - [ ] Migrate the src/*.tsx
 
+- [ ] **#12 — Squirclized dock icons (haven't found how apple does it based on the colors in the icon**
+
+- [x] **#15 Dock redesign to look like macos Monterey**
+
 - [x] **#3 — Fix brightness slider (laptop)**
   - [x] **Step 1 — `CoSetProxyBlanket`:** `ExecQuery` was silently rejected because COM requires `CoSetProxyBlanket()` to be called on the `IWbemServices` proxy after `ConnectServer`. PowerShell handles this automatically; raw COM does not. Added call with `RPC_C_AUTHN_WINNT`, `RPC_C_IMP_LEVEL_IMPERSONATE` before the recv loop.
   - [x] **Step 2 — `GetObject` on class, not instance:** `GetMethod("WmiSetBrightness")` was called on the WMI **instance** object returned by `ExecQuery`. `GetMethod` only works on a **class definition**. Fixed by calling `services.GetObject("WmiMonitorBrightnessMethods")` separately to get the class def, then calling `GetMethod` on that — using the instance's `__RELPATH` only for the final `ExecMethod` target path.
@@ -63,7 +67,6 @@
   - **Brightness OSD always shows:** OSD is triggered by ACPI/firmware layer independently of the Win32 key event. `hide_osd()` already runs after brightness commands but it fires once synchronously — before the ACPI OSD (`NativeHWNDHost`) has even been created. Fix: extract `hide_osd` as a module-level `unsafe fn`, add `hide_osd_with_retry()` that spawns a short thread retrying ~8x every 30ms (~240ms window) to catch the OSD whenever it appears. Use `hide_osd_with_retry()` for `BrightnessUp`/`BrightnessDown`, keep single `hide_osd()` for volume (already timed correctly there).
 - **#4 — File shelf:** Do you want a temporary drag-drop holding area to park files and drop them into apps? Or something else?
 - **#9 — Live activities:** Camera/mic detection needs Windows privacy APIs. Which notch mode should it appear in — always-on tray-style, or peek/pulse like battery?
-- **#12 — Squirclized dock icons (haven't found how apple does it based on the colors in the icon**
 - **#13 — Listener for bluetooth and wifi to status and command center**
 
 🌑 **The Deep Dark (park for later):**
@@ -71,7 +74,7 @@
 - **#2** Settings redesign
 - **#6** Code refactor + consistent file naming
 - **#9** Full live activities implementation
-- **#14** Overlay redesign to be like Iphone slider & dock redesign to look like macos 2017
+- **#14** Overlay redesign to be like Iphone slider
 
 ---
 
