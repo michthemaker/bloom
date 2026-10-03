@@ -4,6 +4,13 @@
 
 ✅ **The Known (ready to execute, no blockers):**
 
+- [ ] **#7 - StyleX migration (StyleX = atomic CSS at build time; Framer Motion = runtime inline styles — they coexist but
+ StyleX won't cover Motion's styles. Needs a spike.)**
+  - [x] Migrate the src/components directory
+  - [ ] Migrate the src/icons directory
+  - [ ] Migrate the src/settings directory
+  - [ ] Migrate the src/*.tsx
+
 - [x] **#3 — Fix brightness slider (laptop)**
   - [x] **Step 1 — `CoSetProxyBlanket`:** `ExecQuery` was silently rejected because COM requires `CoSetProxyBlanket()` to be called on the `IWbemServices` proxy after `ConnectServer`. PowerShell handles this automatically; raw COM does not. Added call with `RPC_C_AUTHN_WINNT`, `RPC_C_IMP_LEVEL_IMPERSONATE` before the recv loop.
   - [x] **Step 2 — `GetObject` on class, not instance:** `GetMethod("WmiSetBrightness")` was called on the WMI **instance** object returned by `ExecQuery`. `GetMethod` only works on a **class definition**. Fixed by calling `services.GetObject("WmiMonitorBrightnessMethods")` separately to get the class def, then calling `GetMethod` on that — using the instance's `__RELPATH` only for the final `ExecMethod` target path.
@@ -46,13 +53,6 @@
 
 - [x] **#8 - Dependency updates (`framer-motion` → `motion` rename, low risk)**
   - [x] Update code to import from motion/react
-
-- [ ] **#7 - StyleX migration (StyleX = atomic CSS at build time; Framer Motion = runtime inline styles — they coexist but
- StyleX won't cover Motion's styles. Needs a spike.)**
-  - [ ] Migrate the src/components directory
-  - [ ] Migrate the src/icons directory
-  - [ ] Migrate the src/settings directory
-  - [ ] Migrate the src/*.tsx
  
 
 

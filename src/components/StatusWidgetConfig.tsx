@@ -32,6 +32,9 @@ import {
 	RamMemoryIcon,
 	XIcon
 } from "@hugeicons/core-free-icons";
+import { Draggable } from "./Draggable";
+import * as stylex from "@stylexjs/stylex";
+import { bloom_tokens } from "../tokens.stylex";
 
 export interface WidgetConfig {
 	left: string[];
@@ -61,21 +64,179 @@ const DEFAULT_CONFIG: WidgetConfig = {
 
 const MAX_PER_ZONE = 2;
 
+const styles = stylex.create({
+	widget_pill: {
+		display: "inline-flex",
+		alignItems: "center",
+		gap: "5px",
+		paddingBlock: "4px",
+		paddingInline: "6px",
+		borderRadius: "12px",
+		cornerShape: "superellipse(1.85)",
+		fontSize: "11px",
+		fontWeight: 500,
+		color: `var(${bloom_tokens.bloom_text}, rgba(255, 255, 255, 0.7))`,
+		whiteSpace: "nowrap",
+		userSelect: "none"
+	},
+	widget_pill_placed: {
+		backgroundColor: "rgba(255, 255, 255, 0.07)",
+		borderWidth: "1px",
+		borderStyle: "solid",
+		borderColor: "rgba(255, 255, 255, 0.06)",
+		cursor: "default",
+		gap: 0
+	},
+	widget_pill_drag_handle: {
+		display: "inline-flex",
+		alignItems: "center",
+		gap: "5px",
+		paddingBlock: "2px",
+		paddingInline: "4px",
+		borderRadius: "4px",
+		flexGrow: 1,
+		flexShrink: 1,
+		flexBasis: "auto",
+		minWidth: 0
+	},
+	widget_pill_available: {
+		backgroundColor: {
+			default: `var(${bloom_tokens.bloom_group_bg}, rgba(255, 255, 255, 0.03))`,
+			":hover": "rgba(255, 255, 255, 0.06)"
+		},
+		borderWidth: "1px",
+		borderStyle: "dashed",
+		borderColor: {
+			default: `rgba(255, 255, 255, 0.08)`,
+			":hover": `rgba(255, 255, 255, 0.12)`
+		},
+		paddingBlock: "6px",
+		paddingInlineStart: "8px",
+		paddingInlineEnd: "10px",
+		transition: `
+			background-color 0.1s,
+			border-color 0.1s`
+	},
+	widget_pill_dragging: {
+		opacity: 0.5,
+		backgroundColor: `rgba(96, 165, 250, 0.15)`,
+		borderWidth: "1px",
+		borderStyle: "solid",
+		borderColor: `rgba(96, 165, 250, 0.3)`
+	},
+	widget_config: {
+		marginInline: "14px",
+		display: "flex",
+		flexDirection: "column",
+		gap: "8px"
+	},
+	widget_config_zone: {
+		display: "flex",
+		alignItems: "center",
+		gap: "10px",
+		marginBlockStart: "12px",
+		paddingBlock: "4px",
+		paddingInline: "8px",
+		borderRadius: "18px",
+		borderColor: "transparent",
+		cornerShape: "superellipse(1.85)",
+		borderWidth: "1px",
+		borderStyle: "dashed",
+		transitionProperty: "border-color, background-color",
+		transitionDuration: "0.15s",
+		minHeight: "34px"
+	},
+	widget_config_zone_over: {
+		borderColor: "rgba(96, 165, 250, 0.4)",
+		backgroundColor: "rgba(96, 165, 250, 0.06)"
+	},
+	widget_config_side: {
+		fontSize: "10px",
+		fontWeight: 600,
+		textTransform: "uppercase",
+		letterSpacing: "0.5px",
+		color: `var(${bloom_tokens.bloom_text_muted}, rgba(255, 255, 255, 0.25))`,
+		width: "40px",
+		flexShrink: 0
+	},
+	widget_config_chips: {
+		display: "flex",
+		alignItems: "center",
+		flexWrap: "wrap",
+		gap: "6px",
+		flexGrow: 1,
+		flexShrink: 1,
+		flexBasis: "0%",
+		minHeight: "24px"
+	},
+	widget_config_empty: {
+		fontSize: "11px",
+		color: `var(${bloom_tokens.bloom_text_muted}, rgba(255, 255, 255, 0.15))`,
+		fontStyle: "italic"
+	},
+	widget_pill_btns: {
+		display: "flex",
+		alignItems: "center",
+		gap: "1px",
+		marginLeft: "2px"
+	},
+	widget_pill_btn: {
+		display: "flex",
+		alignItems: "center",
+		justifyContent: "center",
+		width: "14px",
+		height: "14px",
+		borderWidth: "0",
+		borderStyle: "none",
+		borderColor: "transparent",
+		borderRadius: "3px",
+		backgroundColor: "transparent",
+		color: `var(${bloom_tokens.bloom_text_muted}, rgba(255, 255, 255, 0.2))`,
+		cursor: "pointer",
+		paddingBlock: "0",
+		paddingInline: "0",
+		transitionProperty: "background-color, color",
+		transitionDuration: "0.1s",
+		":hover": {
+			backgroundColor: "rgba(255, 255, 255, 0.12)",
+			color: `var(${bloom_tokens.bloom_text}, rgba(255, 255, 255, 0.7))`
+		}
+	},
+	widget_pill_btn_x: {
+		":hover": {
+			backgroundColor: "rgba(239, 68, 68, 0.25)",
+			color: "#ef4444"
+		}
+	},
+	widget_config_pool: {
+		borderTopWidth: "1px",
+		borderTopStyle: "solid",
+		borderTopColor: `var(${bloom_tokens.bloom_border}, rgba(255, 255, 255, 0.06))`,
+		paddingTop: "8px",
+		paddingBlock: "10px"
+	},
+	widget_config_pool_chips: {
+		display: "flex",
+		flexWrap: "wrap",
+		gap: "6px"
+	}
+});
+
 /* ── Draggable pool chip ── */
 function PoolChip({ id }: { id: string }) {
 	const def = WIDGET_DEFS.find((w) => w.id === id)!;
 	const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id });
 	const Icon = def.icon;
 	return (
-		<div
+		<Draggable
 			ref={setNodeRef}
-			className={`widget-pill draggable-element widget-pill--available ${isDragging ? "dragging" : ""}`}
+			className={`${stylex.props(styles.widget_pill, styles.widget_pill_available).className} ${isDragging && "dragging"}`}
 			{...listeners}
 			{...attributes}
 		>
 			<HugeiconsIcon icon={Icon} size={12} strokeWidth={2} color={def.color} />
 			<span>{def.label}</span>
-		</div>
+		</Draggable>
 	);
 }
 
@@ -113,28 +274,42 @@ function SortablePlacedChip({
 		<div
 			ref={setNodeRef}
 			style={style}
-			className={`widget-pill widget-pill--placed ${isDragging ? "dragging" : ""}`}
+			className={`${stylex.props(styles.widget_pill, styles.widget_pill_placed).className} ${isDragging && "dragging"}`}
 		>
-			<div {...attributes} {...listeners} className="widget-pill-drag-handle draggable-element">
+			<Draggable
+				{...attributes}
+				{...listeners}
+				className={stylex.props(styles.widget_pill_drag_handle).className}
+			>
 				<HugeiconsIcon icon={Icon} size={12} strokeWidth={2} color={def.color} />
 				<span>{def.label}</span>
-			</div>
-			<div className="widget-pill-btns">
+			</Draggable>
+			<div className={stylex.props(styles.widget_pill_btns).className}>
 				{idx > 0 && (
-					<button className="widget-pill-btn" onClick={() => onMove(id, -1)}>
+					<button
+						className={stylex.props(styles.widget_pill_btn).className}
+						onClick={() => onMove(id, -1)}
+					>
 						<HugeiconsIcon icon={ChevronUpIcon} size={10} strokeWidth={2} />
 					</button>
 				)}
 				{idx < total - 1 && (
-					<button className="widget-pill-btn" onClick={() => onMove(id, 1)}>
+					<button
+						className={stylex.props(styles.widget_pill_btn).className}
+						onClick={() => onMove(id, 1)}
+					>
 						<HugeiconsIcon icon={ChevronDownIcon} size={10} strokeWidth={2} />
 					</button>
 				)}
-				<button className="widget-pill-btn" title="Swap side" onClick={() => onSwap(id)}>
+				<button
+					className={stylex.props(styles.widget_pill_btn).className}
+					title="Swap side"
+					onClick={() => onSwap(id)}
+				>
 					<HugeiconsIcon icon={ArrowDataTransferHorizontalIcon} size={10} strokeWidth={2} />
 				</button>
 				<button
-					className="widget-pill-btn widget-pill-btn--x"
+					className={stylex.props(styles.widget_pill_btn, styles.widget_pill_btn_x).className}
 					title="Remove"
 					onClick={() => onRemove(id)}
 				>
@@ -165,10 +340,14 @@ function DropZone({
 	return (
 		<div
 			ref={setNodeRef}
-			className={`widget-config-zone ${isOver ? "widget-config-zone--over" : ""}`}
+			className={
+				stylex.props(styles.widget_config_zone, isOver && styles.widget_config_zone_over).className
+			}
 		>
-			<span className="widget-config-side">{side === "left" ? "Left" : "Right"}</span>
-			<div className="widget-config-chips">
+			<span className={stylex.props(styles.widget_config_side).className}>
+				{side === "left" ? "Left" : "Right"}
+			</span>
+			<div className={stylex.props(styles.widget_config_chips).className}>
 				<SortableContext items={items} strategy={horizontalListSortingStrategy}>
 					{items.length > 0 ? (
 						items.map((itemId, i) => (
@@ -183,7 +362,7 @@ function DropZone({
 							/>
 						))
 					) : (
-						<span className="widget-config-empty">Drop here</span>
+						<span className={stylex.props(styles.widget_config_empty).className}>Drop here</span>
 					)}
 				</SortableContext>
 			</div>
@@ -345,7 +524,7 @@ export function StatusWidgetConfig({ value, onChange }: StatusWidgetConfigProps)
 			onDragStart={handleDragStart}
 			onDragEnd={handleDragEnd}
 		>
-			<div className="widget-config">
+			<div className={stylex.props(styles.widget_config).className}>
 				<DropZone
 					id="zone-left"
 					side="left"
@@ -364,8 +543,8 @@ export function StatusWidgetConfig({ value, onChange }: StatusWidgetConfigProps)
 				/>
 
 				{pool.length > 0 && (
-					<div className="widget-config-pool">
-						<div className="widget-config-pool-chips">
+					<div className={stylex.props(styles.widget_config_pool).className}>
+						<div className={stylex.props(styles.widget_config_pool_chips).className}>
 							{pool.map((id) => (
 								<PoolChip key={id} id={id} />
 							))}
@@ -376,7 +555,7 @@ export function StatusWidgetConfig({ value, onChange }: StatusWidgetConfigProps)
 
 			<DragOverlay>
 				{activeDef ? (
-					<div className="widget-pill widget-pill--dragging">
+					<div className={stylex.props(styles.widget_pill, styles.widget_pill_dragging).className}>
 						<HugeiconsIcon
 							icon={activeDef.icon}
 							size={12}

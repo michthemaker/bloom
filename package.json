@@ -20,16 +20,17 @@
 		"@dnd-kit/utilities": "^3.2.2",
 		"@hugeicons/core-free-icons": "^4.3.5",
 		"@hugeicons/react": "^1.1.10",
+		"@stylexjs/stylex": "^0.19.1",
 		"@tauri-apps/api": "~2.11.1",
 		"@tauri-apps/plugin-autostart": "^2.5.1",
 		"@tauri-apps/plugin-dialog": "^2.7.3",
 		"@tauri-apps/plugin-opener": "^2.5.5",
 		"motion": "^14.0.0",
 		"react": "^19.3.0",
-		"react-dom": "^19.3.0",
-		"stylex": "^0.3.0"
+		"react-dom": "^19.3.0"
 	},
 	"devDependencies": {
+		"@stylexjs/unplugin": "^0.19.1",
 		"@tauri-apps/cli": "~2.11.4",
 		"@types/react": "^19.3.0",
 		"@types/react-dom": "^19.3.0",

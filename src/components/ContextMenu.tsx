@@ -1,7 +1,118 @@
 import { useState, useEffect, useRef } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import "./ContextMenu.css";
 import { createPortal } from "react-dom";
+import * as stylex from "@stylexjs/stylex";
+import { bloom_tokens } from "../tokens.stylex";
+
+const styles = stylex.create({
+	menu: {
+		position: "fixed",
+		backgroundColor: `var(${bloom_tokens.bloom_bg}, rgba(40, 40, 40, 0.95))`,
+		backdropFilter: `blur(20px)`,
+		borderWidth: "1px",
+		borderStyle: "solid",
+		borderColor: `var(${bloom_tokens.bloom_border}, rgba(255, 255, 255, 0.1))`,
+		cornerShape: `superellipse(1.85)`,
+		padding: `6px`,
+		zIndex: `9999`,
+		boxShadow: `0 10px 30px rgba(0, 0, 0, 0.5)`,
+		minWidth: `160px`,
+		pointerEvents: `auto`,
+		display: `flex`,
+		flexDirection: `column`,
+		fontFamily: `inherit`
+	},
+	item: {
+		paddingInline: "12px",
+		paddingBlock: "8px",
+		color: `var(${bloom_tokens.bloom_text}, white)`,
+		fontSize: `13px`,
+		borderRadius: `22px`,
+		cornerShape: `superellipse(1.85)`,
+		cursor: `pointer`,
+		fontWeight: 500,
+		userSelect: `none`,
+		transition: `background 0.15s ease`,
+		backgroundColor: {
+			default: "transparent",
+			":hover": "#fff"
+		}
+	},
+	item_quit: {
+		backgroundColor: {
+			default: null,
+			":hover": "#ef4444"
+		}
+	},
+	item_disabled: {
+		opacity: 0.4,
+		pointerEvents: "none"
+	},
+	divider: {
+		height: `1px`,
+		backgroundColor: `var(${bloom_tokens.bloom_border}, rgba(255, 255, 255, 0.15))`,
+		marginInline: "8px",
+		marginBlock: "4px",
+		flexShrink: 0
+	},
+	// submenu trigger row
+	item_sub: {
+		display: "flex",
+		justifyContent: "space-between",
+		alignItems: "center",
+		position: "relative",
+		backgroundColor: {
+			default: "transparent",
+			":hover": "#3b82f6"
+		},
+		color: {
+			default: null,
+			":hover": "#fff"
+		}
+	},
+	sub_arrow: {
+		width: "14px",
+		height: "14px",
+		opacity: {
+			default: 0.5,
+			[stylex.when.ancestor(":hover")]: 1
+		},
+		flexShrink: 0,
+		marginLeft: "10px"
+	},
+	submenu: {
+		"::before": {
+			content: "",
+			position: "absolute",
+			left: "-20px",
+			top: "-20px",
+			bottom: "-20px",
+			width: "24px",
+			zIndex: -1
+		},
+		display: {
+			default: "none",
+			[stylex.when.ancestor(":hover")]: "flex"
+		},
+		position: "absolute",
+		left: "calc(100% + 4px)",
+		top: "-6px",
+		backgroundColor: `var(${bloom_tokens.bloom_bg_expanded}, rgba(40, 40, 40, 0.98))`,
+		backdropFilter: "blur(25px)",
+		borderWidth: "1px",
+		borderStyle: "solid",
+		borderColor: `var(${bloom_tokens.bloom_border}, rgba(255, 255, 255, 0.1))`,
+		borderRadius: "28px",
+		cornerShape: "superellipse(1.85)",
+		paddingInline: "6px",
+		paddingBlock: "6px",
+		minWidth: "140px",
+		flexDirection: "column",
+		boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
+		zIndex: 10000
+	},
+	item_icon: {}
+});
 
 export interface ContextMenuAction {
 	label: string;
@@ -67,7 +178,7 @@ export function ContextMenu({ x, y, items, onClose, scale = 1 }: ContextMenuProp
 	return createPortal(
 		<div
 			ref={menuRef}
-			className="cm"
+			className={stylex.props(styles.menu).className}
 			style={{ left: x, top: y, zoom: scale }}
 			onClick={(e) => e.stopPropagation()}
 			onContextMenu={(e) => e.preventDefault()}
@@ -91,24 +202,24 @@ function MenuEntry({ item, onClose }: { item: ContextMenuAction; onClose: () => 
 
 	return (
 		<>
-			{item.dividerBefore && <div className="cm-divider" />}
+			{item.dividerBefore && <div className={stylex.props(styles.divider).className} />}
 			<div
-				className={[
-					"cm-item",
-					hasSubmenu ? "cm-item-sub" : "",
-					item.variant === "quit" ? "cm-item-quit" : "",
-					item.disabled ? "cm-item-disabled" : ""
-				]
-					.filter(Boolean)
-					.join(" ")}
+				className={
+					stylex.props(
+						styles.item,
+						hasSubmenu && styles.item_sub,
+						item.variant === "quit" && styles.item_quit,
+						item.disabled && styles.item_disabled
+					).className
+				}
 				onClick={handleClick}
 			>
-				{item.icon && <span className="cm-item-icon">{item.icon}</span>}
+				{item.icon && <span className={stylex.props(styles.item_icon).className}>{item.icon}</span>}
 				{item.label}
 				{hasSubmenu && (
 					<>
 						<svg
-							className="cm-sub-arrow"
+							className={stylex.props(styles.sub_arrow).className}
 							viewBox="0 0 24 24"
 							fill="none"
 							stroke="currentColor"
@@ -118,7 +229,7 @@ function MenuEntry({ item, onClose }: { item: ContextMenuAction; onClose: () => 
 						>
 							<polyline points="9 18 15 12 9 6" />
 						</svg>
-						<div className="cm-submenu">
+						<div className={stylex.props(styles.submenu).className}>
 							{item.submenu!.map((sub, j) => (
 								<MenuEntry key={j} item={sub} onClose={onClose} />
 							))}
