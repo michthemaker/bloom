@@ -303,13 +303,13 @@ body {
 	align-items: center;
 	border-radius: 14px;
 	corner-shape: superellipse(1.85);
-	background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.05) 100%);
+	/* The tile visuals now come from SquirclizedDockIcon */
+	background: transparent;
 	color: var(--bloom-text, white);
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 	transition: opacity 0.2s ease;
 }
 
-.dock-icon img {
+.dock-icon > img {
 	width: 20px;
 	height: 20px;
 	object-fit: contain;
@@ -330,7 +330,7 @@ body {
 	box-shadow: none;
 }
 
-.dock-icon-only .dock-icon img {
+.dock-icon-only .dock-icon > img {
 	width: 32px;
 	height: 32px;
 }
@@ -683,8 +683,7 @@ body {
 
 /* Light mode overrides for Dock */
 .light-mode .dock-icon {
-	background: linear-gradient(135deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.01) 100%);
-	border-color: rgba(0, 0, 0, 0.08);
+	background: transparent;
 }
 
 .light-mode .dock-icon svg {

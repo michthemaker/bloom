@@ -7,6 +7,7 @@ import { initTheme } from "./theme";
 import { useSettingsSync } from "./hooks/useSettingsSync";
 import { ChevronRightIcon, PinIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { SquirclizedDockIcon } from "./components/SquirclizedDockIcon";
 
 interface AppInfo {
 	name: string;
@@ -994,21 +995,7 @@ const Dock = memo(function Dock() {
 															(allowPathFallback && iconsRef.current[app.path]) ||
 															app.icon;
 
-														const isBloomOrSettings =
-															app.name.toLowerCase() === "settings" ||
-															app.name.toLowerCase() === "bloom" ||
-															app.path.toLowerCase().includes("bloom.exe");
-
-														return icon ? (
-															<img
-																src={icon}
-																alt={app.name}
-																className={isBloomOrSettings ? "bloom-icon-img" : ""}
-																draggable={false}
-															/>
-														) : (
-															<div className="fallback-icon">{app.name[0]}</div>
-														);
+														return <SquirclizedDockIcon src={icon || null} alt={app.name} />;
 													})()}
 												</motion.div>
 												{app.is_running && <div className="active-indicator" />}
@@ -1137,20 +1124,7 @@ const Dock = memo(function Dock() {
 													iconsRef.current[cacheKey] ||
 													(allowPathFallback && iconsRef.current[app.path]) ||
 													app.icon;
-												const isBloomOrSettings =
-													app.name.toLowerCase() === "settings" ||
-													app.name.toLowerCase() === "bloom" ||
-													app.path.toLowerCase().includes("bloom.exe");
-												return icon ? (
-													<img
-														src={icon}
-														alt={app.name}
-														className={isBloomOrSettings ? "bloom-icon-img" : ""}
-														draggable={false}
-													/>
-												) : (
-													<div className="fallback-icon">{app.name[0]}</div>
-												);
+												return <SquirclizedDockIcon src={icon || null} alt={app.name} />;
 											})()}
 										</motion.div>
 										{app.is_running && <div className="active-indicator" />}
