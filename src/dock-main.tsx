@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import Dock from "./Dock";
 import "./Dock.css";
+import "./index.css";
 
 document.addEventListener("contextmenu", (e) => e.preventDefault());
 

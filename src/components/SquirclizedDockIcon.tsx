@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import * as stylex from "@stylexjs/stylex";
+import { analyzePixels, FALLBACK_ANALYSIS, type IconAnalysis } from "./icons_analysis";
 
 const styles = stylex.create({
 	base: {
+		position: "relative",
+		overflow: "hidden", // clips full-bleed icons to the squircle
 		display: "flex",
 		alignItems: "center",
 		justifyContent: "center",
@@ -12,122 +15,124 @@ const styles = stylex.create({
 		boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.3), 0 4px 10px rgba(0, 0, 0, 0.25)"
 	},
 	img: {
-		width: "66%",
-		height: "66%",
+		position: "absolute",
+		maxWidth: "none",
 		objectFit: "contain",
 		pointerEvents: "none",
-		userSelect: "none"
+		userSelect: "none",
+		transitionProperty: "opacity",
+		transitionDuration: "120ms"
 	}
 });
 
-const FALLBACK_GRADIENT = "linear-gradient(135deg, hsl(215 18% 52%), hsl(215 18% 32%))";
-const SAMPLE_SIZE = 16;
+const SAMPLE_SIZE = 64;
 
-// icon src -> gradient. Promises are cached too so one icon is only decoded once.
-const gradientCache = new Map<string, string>();
-const pendingCache = new Map<string, Promise<string>>();
-
-function rgbToHsl(r: number, g: number, b: number): [number, number, number] {
-	r /= 255;
-	g /= 255;
-	b /= 255;
-	const max = Math.max(r, g, b);
-	const min = Math.min(r, g, b);
-	const l = (max + min) / 2;
-	if (max === min) return [0, 0, l];
-	const d = max - min;
-	const s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-	let h = 0;
-	if (max === r) h = (g - b) / d + (g < b ? 6 : 0);
-	else if (max === g) h = (b - r) / d + 2;
-	else h = (r - g) / d + 4;
-	return [h * 60, s, l];
+interface LoadedIcon extends IconAnalysis {
+	/** Natural image size, used to place the artwork precisely. */
+	w: number;
+	h: number;
 }
 
-function gradientFromHsl(h: number, s: number): string {
-	// Clamp so every tile reads as a mid-tone glass tile, whatever the icon colors are.
-	const sat = Math.round(Math.min(0.85, Math.max(0.25, s)) * 100);
-	const top = `hsl(${Math.round(h)} ${sat}% 58%)`;
-	const bottom = `hsl(${Math.round(h)} ${sat}% 36%)`;
-	return `linear-gradient(135deg, ${top}, ${bottom})`;
-}
+const FALLBACK: LoadedIcon = { ...FALLBACK_ANALYSIS, w: 1, h: 1 };
 
-function computeGradient(src: string): Promise<string> {
+// icon src -> analysis. Promises are cached too so one icon is only decoded once.
+const cache = new Map<string, LoadedIcon>();
+const pending = new Map<string, Promise<LoadedIcon>>();
+
+function analyze(src: string): Promise<LoadedIcon> {
 	return new Promise((resolve) => {
 		const img = new Image();
+		// Needed to read pixels from remote icons; data:/blob: URLs never taint the canvas.
+		if (!/^(data|blob):/i.test(src)) img.crossOrigin = "anonymous";
 		img.onload = () => {
-			const canvas = document.createElement("canvas");
-			canvas.width = SAMPLE_SIZE;
-			canvas.height = SAMPLE_SIZE;
-			const ctx = canvas.getContext("2d", { willReadFrequently: true });
-			if (!ctx) return resolve(FALLBACK_GRADIENT);
-			ctx.drawImage(img, 0, 0, SAMPLE_SIZE, SAMPLE_SIZE);
-			const { data } = ctx.getImageData(0, 0, SAMPLE_SIZE, SAMPLE_SIZE);
-
-			// Hue is averaged as a vector (x, y) so 350deg and 10deg blend to 0deg, not 180deg.
-			let x = 0;
-			let y = 0;
-			let satSum = 0;
-			let weightSum = 0;
-			for (let i = 0; i < data.length; i += 4) {
-				const a = data[i + 3] / 255;
-				if (a < 0.5) continue;
-				const [h, s, l] = rgbToHsl(data[i], data[i + 1], data[i + 2]);
-				if (l > 0.93 || l < 0.07) continue; // skip near-white and near-black pixels
-				const weight = a * (s + 0.05); // vivid pixels decide the tint
-				const rad = (h * Math.PI) / 180;
-				x += Math.cos(rad) * weight;
-				y += Math.sin(rad) * weight;
-				satSum += s * weight;
-				weightSum += weight;
+			const w = img.naturalWidth || SAMPLE_SIZE;
+			const h = img.naturalHeight || SAMPLE_SIZE;
+			try {
+				// Fit the whole image into the sample canvas without stretching it.
+				const k = SAMPLE_SIZE / Math.max(w, h);
+				const dw = w * k;
+				const dh = h * k;
+				const dx = (SAMPLE_SIZE - dw) / 2;
+				const dy = (SAMPLE_SIZE - dh) / 2;
+				const canvas = document.createElement("canvas");
+				canvas.width = SAMPLE_SIZE;
+				canvas.height = SAMPLE_SIZE;
+				const ctx = canvas.getContext("2d", { willReadFrequently: true });
+				if (!ctx) return resolve({ ...FALLBACK, w, h });
+				ctx.drawImage(img, dx, dy, dw, dh);
+				const { data } = ctx.getImageData(0, 0, SAMPLE_SIZE, SAMPLE_SIZE);
+				const result = analyzePixels(data, SAMPLE_SIZE, { x: dx, y: dy, w: dw, h: dh });
+				resolve({ ...(result ?? FALLBACK_ANALYSIS), w, h });
+			} catch {
+				// Tainted canvas (CORS) or similar: still show the icon on the neutral tile.
+				resolve({ ...FALLBACK, w, h });
 			}
-			if (weightSum === 0) return resolve(FALLBACK_GRADIENT);
-			const hue = ((Math.atan2(y, x) * 180) / Math.PI + 360) % 360;
-			resolve(gradientFromHsl(hue, satSum / weightSum));
 		};
-		img.onerror = () => resolve(FALLBACK_GRADIENT);
+		img.onerror = () => resolve(FALLBACK);
 		img.src = src;
 	});
 }
 
-/** Gradient (CSS `background-image` value) derived from the icon's dominant color. */
-export function getIconGradient(src: string): Promise<string> {
-	const cached = gradientCache.get(src);
-	if (cached) return Promise.resolve(cached);
-	let pending = pendingCache.get(src);
-	if (!pending) {
-		pending = computeGradient(src).then((g) => {
-			gradientCache.set(src, g);
-			pendingCache.delete(src);
-			return g;
+function getIconAnalysis(src: string): Promise<LoadedIcon> {
+	const hit = cache.get(src);
+	if (hit) return Promise.resolve(hit);
+	let p = pending.get(src);
+	if (!p) {
+		p = analyze(src).then((r) => {
+			cache.set(src, r);
+			pending.delete(src);
+			return r;
 		});
-		pendingCache.set(src, pending);
+		pending.set(src, p);
 	}
-	return pending;
+	return p;
+}
+
+/** Gradient (CSS `background-image` value) for the icon's tile. Kept for existing callers. */
+export function getIconGradient(src: string): Promise<string> {
+	return getIconAnalysis(src).then((a) => a.background);
+}
+
+/** Where to put the <img> so the artwork's longer side spans `fill` of the tile, centred. */
+function place(a: LoadedIcon, size: number) {
+	const longest = Math.max(a.box.w * a.w, a.box.h * a.h);
+	const k = (size * a.fill) / longest;
+	const width = a.w * k;
+	const height = a.h * k;
+	return {
+		width,
+		height,
+		left: size / 2 - (a.box.x + a.box.w / 2) * width,
+		top: size / 2 - (a.box.y + a.box.h / 2) * height
+	};
 }
 
 interface SquirclizedDockIconProps {
 	/** Icon image URL or data URI. `null` renders the fallback letter. */
 	src: string | null;
 	alt: string;
-	/** Tile size in px (default 32, the size of `.dock-icon`). */
+	/** Tile size in px (default 36, the size of `.dock-icon`). */
 	size?: number;
 	className?: string;
 }
 
-export function SquirclizedDockIcon({ src, alt, size = 32, className }: SquirclizedDockIconProps) {
-	const [gradient, setGradient] = useState<string>(
-		() => (src && gradientCache.get(src)) || FALLBACK_GRADIENT
-	);
+export function SquirclizedDockIcon({ src, alt, size = 36, className }: SquirclizedDockIconProps) {
+	const [info, setInfo] = useState<LoadedIcon | null>(() => (src && cache.get(src)) || null);
 
 	useEffect(() => {
 		if (!src) {
-			setGradient(FALLBACK_GRADIENT);
+			setInfo(null);
 			return;
 		}
+		const hit = cache.get(src);
+		if (hit) {
+			setInfo(hit);
+			return;
+		}
+		setInfo(null);
 		let cancelled = false;
-		getIconGradient(src).then((g) => {
-			if (!cancelled) setGradient(g);
+		getIconAnalysis(src).then((r) => {
+			if (!cancelled) setInfo(r);
 		});
 		return () => {
 			cancelled = true;
@@ -135,6 +140,10 @@ export function SquirclizedDockIcon({ src, alt, size = 32, className }: Squircli
 	}, [src]);
 
 	const tile = stylex.props(styles.base);
+	const imgProps = stylex.props(styles.img);
+	// Until the analysis is ready the image stays invisible, so it never jumps into place.
+	const box = place(info ?? FALLBACK, size);
+
 	return (
 		<div
 			className={className ? `${tile.className} ${className}` : tile.className}
@@ -142,11 +151,17 @@ export function SquirclizedDockIcon({ src, alt, size = 32, className }: Squircli
 				width: size,
 				height: size,
 				borderRadius: Math.round(size * 0.44),
-				backgroundImage: gradient
+				backgroundImage: (info ?? FALLBACK).background
 			}}
 		>
 			{src ? (
-				<img {...stylex.props(styles.img)} src={src} alt={alt} draggable={false} />
+				<img
+					{...imgProps}
+					src={src}
+					alt={alt}
+					draggable={false}
+					style={{ ...imgProps.style, ...box, opacity: info ? 1 : 0 }}
+				/>
 			) : (
 				<span style={{ fontSize: size * 0.5, fontWeight: 600, color: "#fff" }}>
 					{alt[0]?.toUpperCase()}
@@ -155,4 +170,3 @@ export function SquirclizedDockIcon({ src, alt, size = 32, className }: Squircli
 		</div>
 	);
 }
-

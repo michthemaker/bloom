@@ -729,7 +729,7 @@ const Dock = memo(function Dock() {
 
 	const iconVariants = {
 		idle: { y: 0, scale: 1 },
-		hover: { y: -5, scale: 1.1 },
+		hover: { y: -5, scale: 1.4 },
 		drag: { y: -10, scale: 1.1, opacity: 0.8 },
 		tap: { scale: 0.95 }
 	};

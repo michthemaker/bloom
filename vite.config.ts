@@ -11,7 +11,7 @@ export default defineConfig(async () => ({
 	plugins: [
 		stylex.vite({
 			useCSSLayers: true
-		}),
+		}) as any,
 		react(),
 		svgr()
 	],

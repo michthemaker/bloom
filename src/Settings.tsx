@@ -15,6 +15,7 @@ import {
 import type { SettingsTab } from "./settings/index";
 import { initTheme } from "./theme";
 import "./Settings.css";
+import "./index.css";
 import { IconSvgObject } from "@hugeicons/core-free-icons/types";
 import {
 	InfoIcon,

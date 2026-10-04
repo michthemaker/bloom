@@ -8,6 +8,7 @@ import { getVersion } from "@tauri-apps/api/app";
 import { getCurrentWebviewWindow } from "@tauri-apps/api/webviewWindow";
 import "./Overlay.css";
 import { initTheme } from "./theme";
+import "./index.css";
 
 // ─── Volume Notch ───────────────────────────────────────────────────────────
 

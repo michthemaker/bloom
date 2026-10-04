@@ -759,7 +759,7 @@ unsafe fn hide_osd() {
 		Ok(hwnd) => {
 			let _ = ShowWindow(hwnd, SW_HIDE);
 		}
-		Err(_) => { () }
+		Err(_) => (),
 	}
 
 	// Windows 10/Early 11 Legacy Audio OSD Fallback
@@ -768,7 +768,7 @@ unsafe fn hide_osd() {
 		Ok(hwnd) => {
 			let _ = ShowWindow(hwnd, SW_HIDE);
 		}
-		Err(_) => { () }
+		Err(_) => (),
 	}
 }
 

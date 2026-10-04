@@ -75,7 +75,7 @@ const styles = stylex.create({
 		cornerShape: "superellipse(1.85)",
 		fontSize: "11px",
 		fontWeight: 500,
-		color: `var(${bloom_tokens.bloom_text}, rgba(255, 255, 255, 0.7))`,
+		color: bloom_tokens.bloom_text,
 		whiteSpace: "nowrap",
 		userSelect: "none"
 	},
@@ -101,7 +101,7 @@ const styles = stylex.create({
 	},
 	widget_pill_available: {
 		backgroundColor: {
-			default: `var(${bloom_tokens.bloom_group_bg}, rgba(255, 255, 255, 0.03))`,
+			default: bloom_tokens.bloom_group_bg,
 			":hover": "rgba(255, 255, 255, 0.06)"
 		},
 		borderWidth: "1px",
@@ -155,7 +155,7 @@ const styles = stylex.create({
 		fontWeight: 600,
 		textTransform: "uppercase",
 		letterSpacing: "0.5px",
-		color: `var(${bloom_tokens.bloom_text_muted}, rgba(255, 255, 255, 0.25))`,
+		color: bloom_tokens.bloom_text_muted,
 		width: "40px",
 		flexShrink: 0
 	},
@@ -171,7 +171,7 @@ const styles = stylex.create({
 	},
 	widget_config_empty: {
 		fontSize: "11px",
-		color: `var(${bloom_tokens.bloom_text_muted}, rgba(255, 255, 255, 0.15))`,
+		color: bloom_tokens.bloom_text_muted,
 		fontStyle: "italic"
 	},
 	widget_pill_btns: {
@@ -191,7 +191,7 @@ const styles = stylex.create({
 		borderColor: "transparent",
 		borderRadius: "3px",
 		backgroundColor: "transparent",
-		color: `var(${bloom_tokens.bloom_text_muted}, rgba(255, 255, 255, 0.2))`,
+		color: bloom_tokens.bloom_text_muted,
 		cursor: "pointer",
 		paddingBlock: "0",
 		paddingInline: "0",
@@ -199,7 +199,7 @@ const styles = stylex.create({
 		transitionDuration: "0.1s",
 		":hover": {
 			backgroundColor: "rgba(255, 255, 255, 0.12)",
-			color: `var(${bloom_tokens.bloom_text}, rgba(255, 255, 255, 0.7))`
+			color: bloom_tokens.bloom_text
 		}
 	},
 	widget_pill_btn_x: {
@@ -211,7 +211,7 @@ const styles = stylex.create({
 	widget_config_pool: {
 		borderTopWidth: "1px",
 		borderTopStyle: "solid",
-		borderTopColor: `var(${bloom_tokens.bloom_border}, rgba(255, 255, 255, 0.06))`,
+		borderTopColor: bloom_tokens.bloom_border,
 		paddingTop: "8px",
 		paddingBlock: "10px"
 	},

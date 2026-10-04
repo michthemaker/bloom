@@ -7,11 +7,11 @@ import { bloom_tokens } from "../tokens.stylex";
 const styles = stylex.create({
 	menu: {
 		position: "fixed",
-		backgroundColor: `var(${bloom_tokens.bloom_bg}, rgba(40, 40, 40, 0.95))`,
+		backgroundColor: bloom_tokens.bloom_bg,
 		backdropFilter: `blur(20px)`,
 		borderWidth: "1px",
 		borderStyle: "solid",
-		borderColor: `var(${bloom_tokens.bloom_border}, rgba(255, 255, 255, 0.1))`,
+		borderColor: bloom_tokens.bloom_border,
 		cornerShape: `superellipse(1.85)`,
 		padding: `6px`,
 		zIndex: `9999`,
@@ -25,7 +25,7 @@ const styles = stylex.create({
 	item: {
 		paddingInline: "12px",
 		paddingBlock: "8px",
-		color: `var(${bloom_tokens.bloom_text}, white)`,
+		color: bloom_tokens.bloom_text,
 		fontSize: `13px`,
 		borderRadius: `22px`,
 		cornerShape: `superellipse(1.85)`,
@@ -50,7 +50,7 @@ const styles = stylex.create({
 	},
 	divider: {
 		height: `1px`,
-		backgroundColor: `var(${bloom_tokens.bloom_border}, rgba(255, 255, 255, 0.15))`,
+		backgroundColor: bloom_tokens.bloom_border,
 		marginInline: "8px",
 		marginBlock: "4px",
 		flexShrink: 0
@@ -97,11 +97,11 @@ const styles = stylex.create({
 		position: "absolute",
 		left: "calc(100% + 4px)",
 		top: "-6px",
-		backgroundColor: `var(${bloom_tokens.bloom_bg_expanded}, rgba(40, 40, 40, 0.98))`,
+		backgroundColor: bloom_tokens.bloom_bg_expanded,
 		backdropFilter: "blur(25px)",
 		borderWidth: "1px",
 		borderStyle: "solid",
-		borderColor: `var(${bloom_tokens.bloom_border}, rgba(255, 255, 255, 0.1))`,
+		borderColor: bloom_tokens.bloom_border,
 		borderRadius: "28px",
 		cornerShape: "superellipse(1.85)",
 		paddingInline: "6px",
